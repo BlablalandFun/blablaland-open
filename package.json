@@ -1,8 +1,12 @@
 {
-  "name": "open-server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "@blablaland/core",
+  "private": true,
+  "version": "0.0.1",
+  "author": {
+    "name": "Yovach",
+    "url": "https://blablaland.fun/",
+    "email": "yovach.mail@gmail.com"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,8 +15,7 @@
     "url": "git+https://github.com/Yovach/blablaland-open-server.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Yovach/blablaland-open-server/issues"
   },
