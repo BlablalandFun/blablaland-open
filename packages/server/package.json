@@ -1,0 +1,10 @@
+{
+  "name": "@blablaland/server",
+  "private": true,
+  "devDependencies": {
+    "typescript": "^4.5.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
