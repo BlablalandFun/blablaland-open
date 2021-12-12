@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev:client": "cd packages/client && npm run dev",
+    "dev:server": "cd packages/server && npm run dev",
     "dev": "run-p dev:*"
   },
   "repository": {
