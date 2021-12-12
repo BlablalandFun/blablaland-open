@@ -1,8 +1,5 @@
-import net from 'net';
+import GameServer from './GameServer.js';
 
-net.createServer((socket) => {
-  console.log(socket.remoteAddress);
-}).listen(843).on('listening', () => {
-  console.log('Server listening on port 843');
-  console.log('ok!!')
-})
+for (let serverId = 0; serverId < 3; serverId++) {
+  new GameServer(serverId);
+}
