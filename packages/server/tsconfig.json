@@ -1,6 +1,7 @@
 {
+  "extends": "@tsconfig/node",
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2020",
     "lib": [
       "esnext"
     ],
