@@ -3,17 +3,21 @@ export class LimitedInteger {
   readonly #initialValue: number;
 
   constructor (
-    private value: number,
+    private _value: number,
     private readonly max: number,
   ) {
-    this.#initialValue = value;
+    this.#initialValue = _value;
+  }
+
+  public get value(): number {
+    return this._value;
   }
 
   public increment(): number {
-    if (this.value + 1 > this.max) {
-      this.value = this.#initialValue;
-      return this.value;
+    if (this._value + 1 > this.max) {
+      this._value = this.#initialValue;
+      return this._value;
     }
-    return ++this.value;
+    return ++this._value;
   }
 }
