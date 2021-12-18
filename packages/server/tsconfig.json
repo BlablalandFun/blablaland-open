@@ -1,10 +1,14 @@
 {
   "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
-    "target": "esnext",
     "rootDir": "./src/",
     "outDir": "./dist/",
-    "useDefineForClassFields": true
+    "useDefineForClassFields": true,
+    
+    "incremental": true,
+    "noEmit": true,
+    "moduleResolution": "node",
+    "isolatedModules": true,
   },
   "include": [
     "src/**/**.ts"
