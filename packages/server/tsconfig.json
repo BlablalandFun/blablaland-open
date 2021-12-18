@@ -1,21 +1,10 @@
 {
-  "extends": "@tsconfig/node",
+  "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
-    "target": "es2020",
-    "lib": [
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": false,
-    "forceConsistentCasingInFileNames": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
+    "target": "esnext",
     "rootDir": "./src/",
-    "outDir": "./dist/"
+    "outDir": "./dist/",
+    "useDefineForClassFields": true
   },
   "include": [
     "src/**/**.ts"
