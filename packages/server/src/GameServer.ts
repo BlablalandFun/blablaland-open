@@ -1,43 +1,45 @@
 import net from 'net'
+import GameUser from './GameUser.js';
 
 export default class GameServer {
 
-  private static DEFAULT_SERVER_ID = 12301;
+  static #DEFAULT_SERVER_ID = 12301;
 
-  private server: net.Server;
+  #server: net.Server;
 
   users: any[];
 
   constructor(private serverId: number) {
     this.users = [];
 
-    this.listen();
+    this.#server = net.createServer(this.#onHandleUser);
+    this.#listen();
   }
 
+  get port() {
+    return GameServer.#DEFAULT_SERVER_ID + this.serverId;
+  }
 
-  private listen() {
-    const port = GameServer.DEFAULT_SERVER_ID + this.serverId;
-
-    const server = this.server = net.createServer(this.onHandleUser);
-    server.on('error', (err) => {
+  #listen() {
+    this.#server.on('error', (err) => {
       console.error(err);
     });
-    server.on('listening', () => {
-      console.log(`Server ${this.serverId} listening`);
+    this.#server.on('listening', () => {
+      console.log(`Server ${this.port} listening`);
     })
-    server.listen(port);
+    this.#server.listen(this.port);
   }
 
 
-  onHandleUser = (socket: net.Socket) => {
+  #onHandleUser = (socket: net.Socket) => {
+    console.log('Connexion FLASH')
+
+    const user = new GameUser(socket, this.serverId);
     socket.on('error', (err) => {
       console.error(err);
     })
-
-    socket.on('data', (data) => {
-      console.log('data', data.toString());
-    })
+    
+    socket.on('data', user.onHandleData);
   }
-
 
 }
