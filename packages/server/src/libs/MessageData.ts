@@ -1,9 +1,6 @@
 export class MessageData extends Array {
-  private readonly delimiter: number
-
-  constructor (delimiter: number) {
+  constructor (private readonly delimiter: number) {
     super()
-    this.delimiter = delimiter
   }
 
   isFinished (): boolean {
