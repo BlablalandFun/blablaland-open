@@ -1,4 +1,4 @@
-import net from 'net'
+import net from 'net';
 import GameUser from './GameUser.js';
 
 export default class GameServer {
@@ -32,8 +32,6 @@ export default class GameServer {
 
 
   #onHandleUser = (socket: net.Socket) => {
-    console.log('Connexion FLASH')
-
     const user = new GameUser(socket, this.serverId);
     socket.on('error', (err) => {
       console.error(err);
