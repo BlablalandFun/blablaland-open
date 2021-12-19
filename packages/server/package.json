@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "npx swc src/ --out-dir=dist/",
-    "start": "node dist/index.js",
+    "start": "node --experimental-json-modules dist/index.js",
     "dev": "nodemon",
     "test": "jest"
   }
