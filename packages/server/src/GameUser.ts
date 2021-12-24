@@ -1,10 +1,13 @@
 import { Socket } from 'net'
 import GameServer from './GameServer.js';
+import maps from '../files/maps.json';
+import servers from '../files/servers.json';
 import { SocketMessage } from './libs/network/Binary.js';
 import GP from './libs/GP.js';
 import { LimitedInteger } from './libs/LimitedInteger.js';
 import { MessageData } from './libs/network/MessageData.js';
 import { PacketDefinition } from './types/server.js';
+import { Transport } from './libs/Transport.js';
 
 export default class GameUser {
 
@@ -13,7 +16,7 @@ export default class GameUser {
 
   readonly #outCmpt: LimitedInteger = new LimitedInteger(12, GameUser.#MAX_CMPT)
   readonly #inCmpt: LimitedInteger = new LimitedInteger(12, GameUser.#MAX_CMPT)
-  
+
   #buffer: MessageData = new MessageData(0);
 
   time: number = 0;
@@ -52,10 +55,13 @@ export default class GameUser {
   }
 
   async #parsePacket(packet: PacketDefinition) {
+
+    console.log(`Packet[type=${packet.type}, subType=${packet.subType}]`)
+
     if (packet.type === 1) {
       if (packet.subType === 1) { // GetTime
         this.time = packet.binary.bitReadUnsignedInt(32);
-        
+
         const time = Date.now();
         const sm = new SocketMessage(1, 1);
         sm.bitWriteUnsignedInt(32, time / 1000);
@@ -71,10 +77,65 @@ export default class GameUser {
         }
       } else if (packet.subType === 6) {
         // ask variables
-        console.log('ask variables')
+        const transportList = [
+          new Transport(1),
+        ]
 
         const sm = new SocketMessage(1, 4)
-        
+        transportList.forEach((transport) => {
+          sm.bitWriteBoolean(true)
+          sm.bitWriteUnsignedInt(GP.BIT_TRANSPORT_ID, transport.id)
+
+          if (transport.maps.length) { // on écrit les maps
+            sm.bitWriteBoolean(true)
+            sm.bitWriteUnsignedInt(4, 0)
+            transport.maps.map((map) => {
+              sm.bitWriteBoolean(true)
+              sm.bitWriteUnsignedInt(GP.BIT_MAP_ID, map)
+            })
+            sm.bitWriteBoolean(false)
+          }
+
+          if (transport.values.length) {
+            sm.bitWriteBoolean(true)
+            sm.bitWriteUnsignedInt(4, 1)
+            transport.values.forEach((value) => {
+              sm.bitWriteBoolean(true)
+              sm.bitWriteUnsignedInt(10, value.time)
+              sm.bitWriteUnsignedInt(5, value.value)
+            })
+            sm.bitWriteBoolean(false)
+          }
+          sm.bitWriteBoolean(false)
+        })
+        sm.bitWriteBoolean(false)
+
+        maps.forEach((map) => {
+          sm.bitWriteBoolean(true)
+          sm.bitWriteUnsignedInt(GP.BIT_MAP_ID, map.id)
+          sm.bitWriteUnsignedInt(GP.BIT_MAP_FILEID, map.fileId)
+          sm.bitWriteString(map.nom)
+          sm.bitWriteUnsignedInt(GP.BIT_TRANSPORT_ID, map.transportId)
+          sm.bitWriteSignedInt(17, map.mapXpos)
+          sm.bitWriteSignedInt(17, map.mapYpos)
+          sm.bitWriteUnsignedInt(5, map.meteoId)
+          sm.bitWriteUnsignedInt(2, map.peace)
+          sm.bitWriteUnsignedInt(GP.BIT_MAP_REGIONID, map.regionId)
+          sm.bitWriteUnsignedInt(GP.BIT_MAP_PLANETID, map.planetId)
+        })
+
+        sm.bitWriteBoolean(false)
+
+        servers.forEach((server) => { // écriture des serveurs
+          sm.bitWriteBoolean(true)
+          sm.bitWriteString(server.nom)
+          sm.bitWriteUnsignedInt(16, server.port)
+        })
+        sm.bitWriteBoolean(false)
+
+        sm.bitWriteUnsignedInt(GP.BIT_SERVER_ID, this.serverId)
+        sm.bitWriteUnsignedInt(8, 1)
+        this.send(sm)
 
       } else if (packet.subType === 17) {
         // packet pour la webradio

@@ -1,0 +1,17 @@
+[
+  {
+    "port": 12301,
+    "nom": "Origine",
+    "nbCo": 0
+  },
+  {
+    "port": 12302,
+    "nom": "Légende",
+    "nbCo": 0
+  },
+  {
+    "port": 12303,
+    "nom": "Fury Tournament",
+    "nbCo": 0
+  }
+]
