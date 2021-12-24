@@ -1,9 +1,9 @@
 import { Socket } from 'net'
 import GameServer from './GameServer.js';
-import { SocketMessage } from './libs/Binary.js';
+import { SocketMessage } from './libs/network/Binary.js';
 import GP from './libs/GP.js';
 import { LimitedInteger } from './libs/LimitedInteger.js';
-import { MessageData } from './libs/MessageData.js';
+import { MessageData } from './libs/network/MessageData.js';
 import { PacketDefinition } from './types/server.js';
 
 export default class GameUser {
@@ -72,6 +72,10 @@ export default class GameUser {
       } else if (packet.subType === 6) {
         // ask variables
         console.log('ask variables')
+
+        const sm = new SocketMessage(1, 4)
+        
+
       } else if (packet.subType === 17) {
         // packet pour la webradio
       }

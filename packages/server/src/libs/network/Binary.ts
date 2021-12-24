@@ -1,4 +1,4 @@
-import GP from "./GP.js"
+import GP from "../GP.js"
 
 const powList = (i: number): number => 2 ** i
 
