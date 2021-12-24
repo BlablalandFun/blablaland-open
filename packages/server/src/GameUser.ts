@@ -59,13 +59,22 @@ export default class GameUser {
     console.log(`Packet[type=${packet.type}, subType=${packet.subType}]`)
 
     if (packet.type === 1) {
-      if (packet.subType === 1) { // GetTime
+      if (packet.subType === 1) {
+        // GetTime
         this.time = packet.binary.bitReadUnsignedInt(32);
 
         const time = Date.now();
         const sm = new SocketMessage(1, 1);
         sm.bitWriteUnsignedInt(32, time / 1000);
         sm.bitWriteUnsignedInt(10, time % 1000);
+        this.send(sm);
+      } else if (packet.subType === 2) {
+        // login
+        const sm = new SocketMessage(2, 1);
+        sm.bitWriteUnsignedInt(GP.BIT_USER_ID, this.playerId) // userId
+        sm.bitWriteString("admin_" + this.playerId) // pseudo
+        sm.bitWriteUnsignedInt(GP.BIT_GRADE, 9999) // grade
+        sm.bitWriteUnsignedInt(32, 9999) // xp
         this.send(sm);
       } else if (packet.subType === 3) { // AskPid
         if (this.playerId === 0) {
@@ -139,6 +148,35 @@ export default class GameUser {
 
       } else if (packet.subType === 17) {
         // packet pour la webradio
+      }
+    } else if (packet.type === 3) {
+      if (packet.subType === 3) {
+        // main camera
+
+
+
+        const sm = new SocketMessage(3, 2)
+        sm.bitWriteUnsignedInt(GP.BIT_ERROR_ID, 0)
+        sm.bitWriteUnsignedInt(GP.BIT_CAMERA_ID, 1) // id de la camera
+        sm.bitWriteString("0129402a0a20333334") // pour les couleurs du tchat
+        sm.bitWriteUnsignedInt(GP.BIT_MAP_ID, 9) // map accueil
+        sm.bitWriteUnsignedInt(GP.BIT_MAP_FILEID, 9) // map accueil
+        sm.bitWriteBoolean(false) // smileys
+        sm.bitWriteBoolean(false) // amis
+        sm.bitWriteBoolean(false) // blacklist
+        sm.bitWriteBoolean(false) // objets
+        this.send(sm)
+      } else if (packet.subType === 6) {
+        // mapready
+
+        const cameraId = packet.binary.bitReadUnsignedInt(GP.BIT_CAMERA_ID)
+        const mapId = packet.binary.bitReadUnsignedInt(GP.BIT_MAP_ID)
+
+        const sm = new SocketMessage(4, 1)
+        sm.bitWriteUnsignedInt(GP.BIT_CAMERA_ID, cameraId)
+        sm.bitWriteUnsignedInt(GP.BIT_ERROR_ID, 0)
+        sm.bitWriteUnsignedInt(GP.BIT_METHODE_ID, 3) // apparition
+        
       }
     }
   }
