@@ -6,6 +6,8 @@ import { LimitedInteger } from '../libs/LimitedInteger.js';
 import { SocketMessage } from '../libs/network/Binary.js';
 import { MessageData } from '../libs/network/MessageData.js';
 import { Transport } from '../libs/Transport.js';
+import Camera from '../libs/users/Camera.js';
+import Walker from '../libs/users/Walker.js';
 import app from '../services/app.js';
 import { PacketDefinition } from '../types/server.js';
 
@@ -22,11 +24,17 @@ export default class GameUser {
   time: number = 0;
   playerId: number = 0;
 
+  readonly walker = new Walker()
+  readonly cameraList: Camera[] = [];
 
   constructor(
     private socket: Socket,
     public serverId: number,
   ) { }
+
+  get username() {
+    return "admin_" + this.playerId
+  }
 
   get server() {
     return app.servers.find(server => server.serverId === this.serverId);
@@ -76,7 +84,7 @@ export default class GameUser {
         // login
         const sm = new SocketMessage(2, 1);
         sm.bitWriteUnsignedInt(GP.BIT_USER_ID, this.playerId) // userId
-        sm.bitWriteString("admin_" + this.playerId) // pseudo
+        sm.bitWriteString(this.username) // pseudo
         sm.bitWriteUnsignedInt(GP.BIT_GRADE, 9999) // grade
         sm.bitWriteUnsignedInt(32, 9999) // xp
         this.send(sm);
@@ -157,14 +165,21 @@ export default class GameUser {
       if (packet.subType === 3) {
         // main camera
 
+        const targetMap = this.server?.getMapBy(map => map.id === 9)
+        if (!targetMap) {
+          return
+        }
 
+        const camera = new Camera(0, this.playerId)
+        camera.nextMap = targetMap
+        this.cameraList.push(camera)
 
         const sm = new SocketMessage(3, 2)
-        sm.bitWriteUnsignedInt(GP.BIT_ERROR_ID, 0)
-        sm.bitWriteUnsignedInt(GP.BIT_CAMERA_ID, 1) // id de la camera
+        sm.bitWriteUnsignedInt(GP.BIT_ERROR_ID, 0) // inutilisé
+        sm.bitWriteUnsignedInt(GP.BIT_CAMERA_ID, camera.id) // id de la camera
         sm.bitWriteString("0129402a0a20333334") // pour les couleurs du tchat
-        sm.bitWriteUnsignedInt(GP.BIT_MAP_ID, 9) // map accueil
-        sm.bitWriteUnsignedInt(GP.BIT_MAP_FILEID, 9) // map accueil
+        sm.bitWriteUnsignedInt(GP.BIT_MAP_ID, targetMap.id) // map accueil
+        sm.bitWriteUnsignedInt(GP.BIT_MAP_FILEID, targetMap.definition.fileId) // map accueil
         sm.bitWriteBoolean(false) // smileys
         sm.bitWriteBoolean(false) // amis
         sm.bitWriteBoolean(false) // blacklist
@@ -176,25 +191,15 @@ export default class GameUser {
         const cameraId = packet.binary.bitReadUnsignedInt(GP.BIT_CAMERA_ID)
         const mapId = packet.binary.bitReadUnsignedInt(GP.BIT_MAP_ID)
 
+        const camera = this.cameraList.find(camera => camera.id === cameraId)
+        if (!camera) {
+          return
+        }
 
-
-        const server = this.server
-        if (server) {
-          const map = server.getMapBy(m => m.id === mapId)
-          if (map) {
-            const definition = map.definition
-            const sm = new SocketMessage(4, 1)
-            sm.bitWriteUnsignedInt(GP.BIT_CAMERA_ID, cameraId)
-            sm.bitWriteUnsignedInt(GP.BIT_ERROR_ID, 0)
-            sm.bitWriteUnsignedInt(GP.BIT_METHODE_ID, 3) // apparition
-
-            // write map definition
-            sm.bitWriteSignedInt(17, definition.mapXpos)
-            sm.bitWriteSignedInt(17, definition.mapYpos)
-            sm.bitWriteUnsignedInt(5, definition.meteoId)
-            sm.bitWriteUnsignedInt(GP.BIT_TRANSPORT_ID, definition.transportId)
-            sm.bitWriteUnsignedInt(16, definition.peace)
-          }
+        const map = this.server?.getMapBy(m => m.id === mapId)
+        if (map) {
+          console.log('map ready')
+          camera.onMapReady(map, 0)
         }
 
       }

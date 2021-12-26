@@ -66,7 +66,9 @@ export default class GameServer {
 
 
   #onHandleUser = (socket: Socket) => {
+    console.log('handle user')
     const user = new GameUser(socket, this.serverId);
+    app.users.push(user)
     socket.on('error', (err) => {
       console.error(err);
     })

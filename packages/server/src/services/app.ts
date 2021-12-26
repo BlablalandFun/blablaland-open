@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import maps from '../../files/maps.json' assert { type: 'json' };
 import servers from '../../files/servers.json' assert { type: 'json' };
+import FlashServer from '../containers/FlashServer.js';
 import GameMap from "../containers/GameMap.js";
 import GameServer from "../containers/GameServer.js";
 import GameUser from "../containers/GameUser.js";
@@ -29,6 +30,7 @@ export class Application {
   }
 
   async initServers() {
+    new FlashServer()
     servers.forEach(server => {
       const gameServer = new GameServer(server);
       this.servers.push(gameServer);
