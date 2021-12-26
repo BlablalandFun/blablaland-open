@@ -6,6 +6,7 @@ import { LimitedInteger } from '../libs/LimitedInteger.js';
 import { SocketMessage } from '../libs/network/Binary.js';
 import { MessageData } from '../libs/network/MessageData.js';
 import { Transport } from '../libs/Transport.js';
+import app from '../services/app.js';
 import { PacketDefinition } from '../types/server.js';
 
 export default class GameUser {
@@ -26,6 +27,10 @@ export default class GameUser {
     private socket: Socket,
     public serverId: number,
   ) { }
+
+  get server() {
+    return app.servers.find(server => server.serverId === this.serverId);
+  }
 
   onHandleData = async (data: Buffer) => {
     this.#buffer.push(...data)
@@ -171,10 +176,26 @@ export default class GameUser {
         const cameraId = packet.binary.bitReadUnsignedInt(GP.BIT_CAMERA_ID)
         const mapId = packet.binary.bitReadUnsignedInt(GP.BIT_MAP_ID)
 
-        const sm = new SocketMessage(4, 1)
-        sm.bitWriteUnsignedInt(GP.BIT_CAMERA_ID, cameraId)
-        sm.bitWriteUnsignedInt(GP.BIT_ERROR_ID, 0)
-        sm.bitWriteUnsignedInt(GP.BIT_METHODE_ID, 3) // apparition
+
+
+        const server = this.server
+        if (server) {
+          const map = server.getMapBy(m => m.id === mapId)
+          if (map) {
+            const definition = map.definition
+            const sm = new SocketMessage(4, 1)
+            sm.bitWriteUnsignedInt(GP.BIT_CAMERA_ID, cameraId)
+            sm.bitWriteUnsignedInt(GP.BIT_ERROR_ID, 0)
+            sm.bitWriteUnsignedInt(GP.BIT_METHODE_ID, 3) // apparition
+
+            // write map definition
+            sm.bitWriteSignedInt(17, definition.mapXpos)
+            sm.bitWriteSignedInt(17, definition.mapYpos)
+            sm.bitWriteUnsignedInt(5, definition.meteoId)
+            sm.bitWriteUnsignedInt(GP.BIT_TRANSPORT_ID, definition.transportId)
+            sm.bitWriteUnsignedInt(16, definition.peace)
+          }
+        }
 
       }
     }

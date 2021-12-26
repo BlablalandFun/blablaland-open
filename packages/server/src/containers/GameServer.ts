@@ -39,7 +39,7 @@ export default class GameServer {
 
   async setup(definitions: MapDefinition[]) {
     definitions.forEach((definition) => {
-      const gameMap = new GameMap(this.serverId, definition);
+      const gameMap = new GameMap(definition.id, this.serverId, definition);
       app.maps.push(gameMap);
     })
     this.log('SETUP');
@@ -58,6 +58,10 @@ export default class GameServer {
     })
     this.#server.listen(this.port);
     return true;
+  }
+
+  getMapBy(predicate: (map: GameMap) => boolean) {
+    return app.maps.find(predicate);
   }
 
 

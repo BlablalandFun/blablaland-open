@@ -10,8 +10,7 @@ export class Application {
   readonly id: string = crypto.randomBytes(8).toString('hex');
   readonly users: GameUser[] = [];
   readonly maps: GameMap[] = [];
-
-  readonly #servers: GameServer[] = [];
+  readonly servers: GameServer[] = [];
 
   async init() {
     await this.initServers()
@@ -32,7 +31,7 @@ export class Application {
   async initServers() {
     servers.forEach(server => {
       const gameServer = new GameServer(server);
-      this.#servers.push(gameServer);
+      this.servers.push(gameServer);
       gameServer.setup(maps);
     })
     return
