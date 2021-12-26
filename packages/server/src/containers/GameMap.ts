@@ -1,5 +1,5 @@
-import GP from "../libs/GP";
-import { SocketMessage } from "../libs/network/Binary";
+import GP from "../libs/GP.js";
+import { SocketMessage } from "../libs/network/Binary.js";
 import { MapDefinition } from "../types/server";
 
 export default class GameMap {
