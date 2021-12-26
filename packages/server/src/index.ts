@@ -1,7 +1,3 @@
-import GameServer from './GameServer.js';
-import FlashServer from './services/FlashServer.js';
+import app from './services/app.js';
 
-new FlashServer();
-for (let serverId = 0; serverId < 3; serverId++) {
-  new GameServer(serverId);
-}
+app.init();

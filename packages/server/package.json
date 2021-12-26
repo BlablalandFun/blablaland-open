@@ -17,5 +17,8 @@
     "start": "node --experimental-json-modules dist/index.js",
     "dev": "nodemon",
     "test": "jest"
+  },
+  "dependencies": {
+    "node-cron": "^3.0.0"
   }
 }

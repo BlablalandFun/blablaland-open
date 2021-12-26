@@ -1,13 +1,12 @@
-import { Socket } from 'net'
-import GameServer from './GameServer.js';
-import maps from '../files/maps.json';
-import servers from '../files/servers.json';
-import { SocketMessage } from './libs/network/Binary.js';
-import GP from './libs/GP.js';
-import { LimitedInteger } from './libs/LimitedInteger.js';
-import { MessageData } from './libs/network/MessageData.js';
-import { PacketDefinition } from './types/server.js';
-import { Transport } from './libs/Transport.js';
+import { Socket } from 'net';
+import maps from '../../files/maps.json';
+import servers from '../../files/servers.json';
+import GP from '../libs/GP.js';
+import { LimitedInteger } from '../libs/LimitedInteger.js';
+import { SocketMessage } from '../libs/network/Binary.js';
+import { MessageData } from '../libs/network/MessageData.js';
+import { Transport } from '../libs/Transport.js';
+import { PacketDefinition } from '../types/server.js';
 
 export default class GameUser {
 
@@ -176,7 +175,7 @@ export default class GameUser {
         sm.bitWriteUnsignedInt(GP.BIT_CAMERA_ID, cameraId)
         sm.bitWriteUnsignedInt(GP.BIT_ERROR_ID, 0)
         sm.bitWriteUnsignedInt(GP.BIT_METHODE_ID, 3) // apparition
-        
+
       }
     }
   }
