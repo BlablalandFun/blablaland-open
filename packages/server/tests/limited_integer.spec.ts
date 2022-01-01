@@ -1,4 +1,4 @@
-export class LimitedInteger {
+class LimitedInteger {
 
   initialValue: number;
 
@@ -33,3 +33,5 @@ test("limited_integer_zero", () => {
   expect(limitedInteger.increment()).toBe(3)
   expect(limitedInteger.increment()).toBe(0)
 })
+
+export {}
