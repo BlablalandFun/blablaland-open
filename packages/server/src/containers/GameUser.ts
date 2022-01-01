@@ -10,6 +10,7 @@ import Camera from '../libs/users/Camera.js';
 import Walker from '../libs/users/Walker.js';
 import app from '../services/app.js';
 import { PacketDefinition } from '../types/server.js';
+import { PhysicEvent } from '../types/user';
 
 export default class GameUser {
 
@@ -160,6 +161,30 @@ export default class GameUser {
 
       } else if (packet.subType === 17) {
         // packet pour la webradio
+      }
+    } else if (packet.type === 2) {
+      // packet de déplacement du joueur
+      if (packet.subType === 1 || packet.subType === 2) {
+
+        const mapId = packet.binary.bitReadUnsignedInt(GP.BIT_MAP_ID);
+        this.time = packet.binary.bitReadUnsignedInt(32);
+
+        this.walker.readStateFromMessage(packet.binary);
+
+        let physicEvent: PhysicEvent;
+
+        if (packet.subType === 2) {
+          physicEvent = {
+            event: packet.binary.bitReadUnsignedInt(2),
+            lastColor: packet.binary.bitReadUnsignedInt(24),
+            newColor: packet.binary.bitReadUnsignedInt(24),
+            eventType: packet.binary.bitReadUnsignedInt(8),
+            lastSpeedX: packet.binary.bitReadSignedInt(18),
+            lastSpeedY: packet.binary.bitReadSignedInt(18)
+          }
+        }
+
+        this.send(new SocketMessage(1, 11));
       }
     } else if (packet.type === 3) {
       if (packet.subType === 3) {

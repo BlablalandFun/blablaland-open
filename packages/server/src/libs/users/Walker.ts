@@ -52,4 +52,24 @@ export default class Walker {
     binary.bitWriteBoolean(false) // fxMemory
   }
 
+  readStateFromMessage(binary: Binary) {
+    this.jump = binary.bitReadSignedInt(2)
+    this.walk = binary.bitReadSignedInt(2)
+    this.shiftKey = binary.bitReadBoolean()
+    this.direction = binary.bitReadBoolean()
+    this.onFloor = binary.bitReadBoolean()
+    this.underWater = binary.bitReadBoolean()
+    this.grimpe = binary.bitReadBoolean()
+    this.accroche = binary.bitReadBoolean()
+    if (binary.bitReadBoolean()) {
+      this.positionX = binary.bitReadSignedInt(21) / 100
+      this.positionY = binary.bitReadSignedInt(21) / 100
+      this.surfaceBody = binary.bitReadUnsignedInt(8)
+      this.speedX = binary.bitReadSignedInt(18)
+      this.speedY = binary.bitReadSignedInt(18)
+    }
+    if (binary.bitReadBoolean()) {
+      this.skinColor = SkinColor.readBinaryColor(binary)
+    }
+  }
 }
