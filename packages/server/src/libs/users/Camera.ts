@@ -5,14 +5,30 @@ import Binary, { SocketMessage } from "../network/Binary.js";
 
 export default class Camera {
 
-  currentMap?: GameMap;
+  /* Correspond à la map actuelle du joueur */
+  currMap?: GameMap;
+
+  /* Correspond à la map suivante */
   nextMap?: GameMap;
+
+  /* Correspond à la map précédente */
   prevMap?: GameMap;
 
   constructor(
     private readonly cameraId: number,
     private readonly userPid: number
   ) { }
+
+  isInMap(mapId: number, serverId: number) {
+    if (this.currMap) {
+      return this.currMap.id === mapId && this.currMap.serverId === serverId
+    } else if (this.nextMap) {
+      return this.nextMap.id === mapId && this.nextMap.serverId === serverId
+    } else if (this.prevMap) {
+      return this.prevMap.id === mapId && this.prevMap.serverId === serverId
+    }
+    return false;
+  }
 
   get user() {
     return app.users.find(user => user.playerId === this.userPid);

@@ -33,6 +33,16 @@ export default class GameUser {
     public serverId: number,
   ) { }
 
+  /**
+   * Permet de vérifier si le joueur est dans une map
+   * @param mapId - ID de la map
+   * @param serverId - ID du serveur où se situe la map
+   * @returns 
+   */
+  isInMap(mapId: number, serverId: number) {
+    return this.cameraList.some(cam => cam.isInMap(mapId, serverId));
+  }
+
   get username() {
     return "admin_" + this.playerId
   }
@@ -171,7 +181,7 @@ export default class GameUser {
 
         this.walker.readStateFromMessage(packet.binary);
 
-        let physicEvent: PhysicEvent;
+        let physicEvent: PhysicEvent | undefined = undefined;
 
         if (packet.subType === 2) {
           physicEvent = {
@@ -185,6 +195,14 @@ export default class GameUser {
         }
 
         this.send(new SocketMessage(1, 11));
+
+        const camera = this.cameraList[0]
+        if (!camera) {
+          return
+        }
+
+        camera.currMap?.updatePlayerData(this, physicEvent)
+
       }
     } else if (packet.type === 3) {
       if (packet.subType === 3) {
