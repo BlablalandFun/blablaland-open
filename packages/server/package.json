@@ -3,14 +3,14 @@
   "type": "module",
   "private": true,
   "devDependencies": {
-    "@swc/cli": "^0.1.53",
-    "@swc/core": "^1.2.119",
+    "@swc/cli": "^0.1.55",
+    "@swc/core": "^1.2.124",
     "@tsconfig/node16": "^1.0.2",
-    "@types/jest": "^27.0.3",
+    "@types/jest": "^27.4.0",
     "jest": "^27.4.5",
     "nodemon": "^2.0.15",
     "ts-jest": "^27.1.2",
-    "typescript": "^4.5.3"
+    "typescript": "^4.5.4"
   },
   "scripts": {
     "build": "npx swc src/ --out-dir=dist/",
