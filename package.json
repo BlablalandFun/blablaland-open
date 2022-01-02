@@ -34,6 +34,15 @@
           ".next/**"
         ]
       },
+      "start": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          ".next/**",
+          "dist/**"
+        ]
+      },
       "test": {
         "dependsOn": [
           "^build"
@@ -47,5 +56,10 @@
         "cache": false
       }
     }
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "turbo run start"
   }
 }
