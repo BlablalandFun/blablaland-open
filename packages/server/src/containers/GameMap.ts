@@ -1,6 +1,7 @@
 import GP from "../libs/GP.js";
 import { except } from "../libs/helpers.js";
 import Binary, { SocketMessage } from "../libs/network/Binary.js";
+import Camera from "../libs/users/Camera.js";
 import app from "../services/app.js";
 import { MapDefinition } from "../types/server";
 import { PhysicEvent } from "../types/user.js";
@@ -31,6 +32,13 @@ export default class GameMap {
     binary.bitWriteUnsignedInt(GP.BIT_MAP_ID, this.id)
     binary.bitWriteUnsignedInt(GP.BIT_SERVER_ID, this.serverId)
     return binary
+  }
+
+  onLostUser(camera: Camera) {
+    const binary = this.#getHeader(2)
+    binary.bitWriteUnsignedInt(GP.BIT_USER_PID, camera.playerId)
+    binary.bitWriteUnsignedInt(GP.BIT_METHODE_ID, camera.methodeId)
+    this.sendAll(binary)
   }
 
   updatePlayerData(user: GameUser, physicEvent?: PhysicEvent) {

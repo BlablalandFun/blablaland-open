@@ -228,6 +228,30 @@ export default class GameUser {
         sm.bitWriteBoolean(false) // blacklist
         sm.bitWriteBoolean(false) // objets
         this.send(sm)
+      } else if (packet.subType === 5) {
+        const methodeId = packet.binary.bitReadUnsignedInt(GP.BIT_METHODE_ID)
+        const cameraId = packet.binary.bitReadUnsignedInt(GP.BIT_CAMERA_ID)
+        const mapId = packet.binary.bitReadUnsignedInt(GP.BIT_MAP_ID)
+        const serverId = packet.binary.bitReadUnsignedInt(GP.BIT_SERVER_ID)
+
+        const camera = this.cameraList.find(camera => camera.id === cameraId)
+        if (!camera) {
+          return
+        }
+
+        const targetMap = app.maps.find(map => map.id === mapId && map.serverId === serverId);
+        if (!targetMap) {
+          return
+        }
+
+        camera.methodeId = methodeId
+        camera.prevMap = camera.currMap
+        camera.currMap = undefined
+        camera.nextMap = targetMap
+        this.walker.readStateFromMessage(packet.binary);
+
+        camera.onMapChange(targetMap, 0)
+
       } else if (packet.subType === 6) {
         // mapready
 
