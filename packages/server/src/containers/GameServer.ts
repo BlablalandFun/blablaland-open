@@ -1,5 +1,6 @@
+import ms from 'ms';
 import { createServer, Server, Socket } from 'net';
-import maps from '../../files/maps.json';
+import { ConfigServer } from '../config/server.js';
 import app from '../services/app.js';
 import { MapDefinition, ServerDefinition } from '../types/server.js';
 import GameMap from './GameMap.js';
@@ -71,9 +72,23 @@ export default class GameServer {
     app.users.push(user)
     socket.on('error', (err) => {
       console.error(err);
-    })
+    });
+    socket.on('timeout', () => socket.destroy())
+    socket.on('close', () => {
+      user.cameraList.forEach(camera => camera.removeMap());
+
+      const idx = app.users.indexOf(user);
+      if (idx > -1) {
+        console.log('Suppression du user en mémoire')
+        app.users.splice(idx, 1);
+      }
+    });
 
     socket.on('data', user.onHandleData);
+
+    socket.setNoDelay(true);
+    socket.setTimeout(ConfigServer.TIMEOUT);
+    socket.setKeepAlive(true, ConfigServer.TIMEOUT);
   }
 
 }

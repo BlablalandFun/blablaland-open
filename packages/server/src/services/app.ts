@@ -9,7 +9,7 @@ import GameUser from "../containers/GameUser.js";
 import cron from 'node-cron';
 
 export class Application {
-  
+
   readonly id: string = crypto.randomBytes(8).toString('hex');
   readonly users: GameUser[] = [];
   readonly maps: GameMap[] = [];
@@ -19,8 +19,13 @@ export class Application {
     await this.initServers()
 
     cron.schedule('*/5 * * * *', () => this.showMetrics())
+    cron.schedule('*/5 * * * *', () => this.purgeInactive())
 
     this.showMetrics()
+  }
+
+  purgeInactive(): void {
+    
   }
 
   /**

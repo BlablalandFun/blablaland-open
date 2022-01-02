@@ -20,6 +20,8 @@ export default class GameUser {
   readonly #outCmpt: LimitedInteger = new LimitedInteger(12, GameUser.#MAX_CMPT)
   readonly #inCmpt: LimitedInteger = new LimitedInteger(12, GameUser.#MAX_CMPT)
 
+  lastPacketTime: number = 0;
+
   #buffer: MessageData = new MessageData(0);
 
   time: number = 0;
@@ -79,7 +81,7 @@ export default class GameUser {
 
   async #parsePacket(packet: PacketDefinition) {
 
-    console.log(`Packet[type=${packet.type}, subType=${packet.subType}]`)
+    //console.log(`Packet[type=${packet.type}, subType=${packet.subType}]`)
 
     if (packet.type === 1) {
       if (packet.subType === 1) {
@@ -286,6 +288,8 @@ export default class GameUser {
         }
       }
     }
+
+    this.lastPacketTime = Date.now();
   }
 
   send(binary?: SocketMessage) {
@@ -299,11 +303,13 @@ export default class GameUser {
     buffer.push(...out.exportMessage());
     buffer.push(...binary.exportMessage());
     buffer.push(0);
-    this.socket.write(Buffer.from(buffer), (err?: Error) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-    });
+    if (!this.socket.destroyed) {
+      this.socket.write(Buffer.from(buffer), (err?: Error) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+      });
+    }
   }
 }
