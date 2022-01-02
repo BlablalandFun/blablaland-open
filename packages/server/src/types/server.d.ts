@@ -24,3 +24,13 @@ export type PacketDefinition = {
   subType: number;
   binary: SocketMessage;
 }
+
+
+export type InterfaceEvent = {
+  action?: number;
+  pid?: number;
+  uid?: number;
+  pseudo: string;
+  serverId?: number;
+  text: string;
+}

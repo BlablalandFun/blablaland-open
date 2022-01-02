@@ -100,5 +100,9 @@ export default class Camera {
     })
     sm.bitWriteBoolean(false) // fxList
     user.send(sm)
+
+    this.prevMap = this.currMap
+    this.currMap = map
+    this.nextMap = undefined
   }
 }

@@ -9,7 +9,7 @@ import { Transport } from '../libs/Transport.js';
 import Camera from '../libs/users/Camera.js';
 import Walker from '../libs/users/Walker.js';
 import app from '../services/app.js';
-import { PacketDefinition } from '../types/server.js';
+import { InterfaceEvent, PacketDefinition } from '../types/server.js';
 import { PhysicEvent } from '../types/user';
 
 export default class GameUser {
@@ -107,6 +107,30 @@ export default class GameUser {
           sm.bitWriteUnsignedInt(24, this.playerId);
           this.send(sm);
         }
+      } else if (packet.subType === 4) {
+        const text = packet.binary.bitReadString();
+        const action = packet.binary.bitReadUnsignedInt(3);
+
+        console.log('ici')
+        const camera = this.cameraList[0];
+        if (!camera) {
+          return;
+        }
+        console.log('ici2')
+        
+        const event: InterfaceEvent = {
+          serverId: this.serverId,
+          pid: this.playerId,
+          uid: this.playerId, // this.userId
+          pseudo: this.username,
+          text,
+          action
+        };
+
+        console.log(camera.currMap)
+        camera.currMap?.onMessageMap(event, this.walker.sex);
+        console.log('ici3')
+
       } else if (packet.subType === 6) {
         // ask variables
         const transportList = [
@@ -265,10 +289,8 @@ export default class GameUser {
 
         const map = this.server?.getMapBy(m => m.id === mapId)
         if (map) {
-          console.log('map ready')
           camera.onMapReady(map, 0)
         }
-
       }
     }
   }

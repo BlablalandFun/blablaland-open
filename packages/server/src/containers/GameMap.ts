@@ -3,7 +3,7 @@ import { except } from "../libs/helpers.js";
 import Binary, { SocketMessage } from "../libs/network/Binary.js";
 import Camera from "../libs/users/Camera.js";
 import app from "../services/app.js";
-import { MapDefinition } from "../types/server";
+import { InterfaceEvent, MapDefinition } from "../types/server";
 import { PhysicEvent } from "../types/user.js";
 import GameUser from "./GameUser.js";
 
@@ -20,11 +20,14 @@ export default class GameMap {
   }
 
   sendAll(binary: SocketMessage, predicate?: (user: GameUser) => boolean) {
-    for (const user of this.#users) {
-      if (predicate === undefined || predicate(user)) {
-        user.send(binary)
-      }
-    }
+    const users = this.#users;
+
+    console.log(users)
+    // for (const user of this.#users) {
+    //   if (predicate === undefined || predicate(user)) {
+    //     user.send(binary)
+    //   }
+    // }
   }
 
   #getHeader(subType: number) {
@@ -56,5 +59,19 @@ export default class GameMap {
       binary.bitWriteSignedInt(18, physicEvent.lastSpeedY)
     }
     this.sendAll(binary, except(user))
+  }
+
+  onMessageMap(event: InterfaceEvent, gender: number, options?: { isHtml?: boolean, isModo?: boolean }) {
+    const binary = this.#getHeader(7)
+    binary.bitWriteBoolean(options?.isHtml ?? false)
+    binary.bitWriteBoolean(options?.isModo ?? false)
+    binary.bitWriteUnsignedInt(GP.BIT_USER_PID, event.pid ?? 0)
+    binary.bitWriteUnsignedInt(GP.BIT_USER_PID, event.uid ?? 0)
+    binary.bitWriteUnsignedInt(3, gender)
+    binary.bitWriteString(event.pseudo)
+    binary.bitWriteUnsignedInt(GP.BIT_SERVER_ID, event.serverId ?? 0)
+    binary.bitWriteString(event.text)
+    binary.bitWriteUnsignedInt(3, event.action ?? 0)
+    this.sendAll(binary);
   }
 }
