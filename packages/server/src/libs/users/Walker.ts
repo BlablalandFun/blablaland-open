@@ -17,13 +17,13 @@ export default class Walker {
   surfaceBody = 0
   dodo = false
 
-  positionX = 0
-  positionY = 0
+  positionX = 671
+  positionY = 268
 
   speedX = 0
   speedY = 0
 
-  skinColor: number[] = Array(10).fill(0)
+  skinColor: number[] = [19, 0, 88, 44, 44, 58, 0, 0, 0, 0]
 
   skinId = 7
 
