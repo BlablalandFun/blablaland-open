@@ -4,7 +4,7 @@ import Image from "next/image";
 import logo from "../assets/logo_blablaland.png";
 
 function toFlashVars(value: object) {
-  const entries = Object.entries(value).map(([key, value]) => [key, encodeURIComponent(value)]);
+  const entries = Object.entries(value).map(([key, value]) => [key, value]);
   const result = {};
   for (const [key, value] of entries) {
     result[key] = value;
