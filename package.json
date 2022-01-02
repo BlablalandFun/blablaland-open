@@ -7,11 +7,6 @@
     "url": "https://blablaland.fun/",
     "email": "yovach.mail@gmail.com"
   },
-  "scripts": {
-    "dev:client": "cd packages/client && npm run dev",
-    "dev:server": "cd packages/server && npm run dev",
-    "dev": "run-p dev:*"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Yovach/blablaland-open-server.git"
@@ -23,9 +18,34 @@
   },
   "homepage": "https://github.com/Yovach/blablaland-open-server#readme",
   "devDependencies": {
-    "npm-run-all": "^4.1.5"
+    "turbo": "^1.0.24"
   },
   "workspaces": [
     "packages/**"
-  ]
+  ],
+  "turbo": {
+    "baseBranch": "origin/main",
+    "pipeline": {
+      "build": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          ".next/**"
+        ]
+      },
+      "test": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": []
+      },
+      "lint": {
+        "outputs": []
+      },
+      "dev": {
+        "cache": false
+      }
+    }
+  }
 }
