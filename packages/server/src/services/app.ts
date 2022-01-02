@@ -6,6 +6,8 @@ import GameMap from "../containers/GameMap.js";
 import GameServer from "../containers/GameServer.js";
 import GameUser from "../containers/GameUser.js";
 
+import cron from 'node-cron';
+
 export class Application {
   
   readonly id: string = crypto.randomBytes(8).toString('hex');
@@ -15,6 +17,8 @@ export class Application {
 
   async init() {
     await this.initServers()
+
+    cron.schedule('*/5 * * * *', () => this.showMetrics())
 
     this.showMetrics()
   }
