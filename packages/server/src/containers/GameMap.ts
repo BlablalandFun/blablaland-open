@@ -15,19 +15,16 @@ export default class GameMap {
     readonly definition: MapDefinition
   ) { }
 
-  get #users() {
+  get users() {
     return app.users.filter(user => user.isInMap(this.id, this.serverId))
   }
 
   sendAll(binary: SocketMessage, predicate?: (user: GameUser) => boolean) {
-    const users = this.#users;
-
-    console.log(users)
-    // for (const user of this.#users) {
-    //   if (predicate === undefined || predicate(user)) {
-    //     user.send(binary)
-    //   }
-    // }
+    this.users.filter(user => {
+      return predicate === undefined || predicate(user)
+    }).forEach(user => {
+      user.send(binary)
+    })
   }
 
   #getHeader(subType: number) {

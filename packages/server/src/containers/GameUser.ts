@@ -110,13 +110,10 @@ export default class GameUser {
       } else if (packet.subType === 4) {
         const text = packet.binary.bitReadString();
         const action = packet.binary.bitReadUnsignedInt(3);
-
-        console.log('ici')
         const camera = this.cameraList[0];
         if (!camera) {
           return;
         }
-        console.log('ici2')
         
         const event: InterfaceEvent = {
           serverId: this.serverId,
@@ -126,11 +123,7 @@ export default class GameUser {
           text,
           action
         };
-
-        console.log(camera.currMap)
         camera.currMap?.onMessageMap(event, this.walker.sex);
-        console.log('ici3')
-
       } else if (packet.subType === 6) {
         // ask variables
         const transportList = [
