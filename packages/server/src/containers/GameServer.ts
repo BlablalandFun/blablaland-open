@@ -67,23 +67,13 @@ export default class GameServer {
 
 
   #onHandleUser = (socket: Socket) => {
-    console.log('handle user')
     const user = new GameUser(socket, this.serverId);
     app.users.push(user)
     socket.on('error', (err) => {
       console.error(err);
     });
-    socket.on('timeout', () => socket.destroy())
-    socket.on('close', () => {
-      user.cameraList.forEach(camera => camera.removeMap());
-
-      const idx = app.users.indexOf(user);
-      if (idx > -1) {
-        console.log('Suppression du user en mémoire')
-        app.users.splice(idx, 1);
-      }
-    });
-
+    socket.on('timeout', user.closeSocket)
+    socket.on('close', user.onDisconnect);
     socket.on('data', user.onHandleData);
 
     socket.setNoDelay(true);

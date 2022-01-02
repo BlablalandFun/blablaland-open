@@ -7,6 +7,7 @@ import { SocketMessage } from '../libs/network/Binary.js';
 import { MessageData } from '../libs/network/MessageData.js';
 import { Transport } from '../libs/Transport.js';
 import Camera from '../libs/users/Camera.js';
+import UserState from '../libs/users/UserState.js';
 import Walker from '../libs/users/Walker.js';
 import app from '../services/app.js';
 import { InterfaceEvent, PacketDefinition } from '../types/server.js';
@@ -26,6 +27,8 @@ export default class GameUser {
 
   time: number = 0;
   playerId: number = 0;
+
+  state = UserState.PLAYING;
 
   readonly walker = new Walker()
   readonly cameraList: Camera[] = [];
@@ -51,6 +54,28 @@ export default class GameUser {
 
   get server() {
     return app.servers.find(server => server.serverId === this.serverId);
+  }
+
+  closeSocket = () => {
+    this.socket.destroy();
+  }
+
+  onDisconnect = async (hadError: boolean) => {
+    if (this.state === UserState.DISCONNECTING) {
+      return;
+    }
+
+    this.state = UserState.DISCONNECTING;
+    this.cameraList.forEach(camera => {
+      camera.methodeId = GP.BIT_METHODE_APPARITION;
+      camera.removeMap();
+    });
+
+    const idx = app.users.indexOf(this);
+    if (idx > -1) {
+      console.log('Suppression du user en mémoire')
+      app.users.splice(idx, 1);
+    }
   }
 
   onHandleData = async (data: Buffer) => {
@@ -116,7 +141,7 @@ export default class GameUser {
         if (!camera) {
           return;
         }
-        
+
         const event: InterfaceEvent = {
           serverId: this.serverId,
           pid: this.playerId,

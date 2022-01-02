@@ -7,6 +7,8 @@ import GameServer from "../containers/GameServer.js";
 import GameUser from "../containers/GameUser.js";
 
 import cron from 'node-cron';
+import ms from 'ms';
+import { ConfigServer } from '../config/server.js';
 
 export class Application {
 
@@ -19,13 +21,18 @@ export class Application {
     await this.initServers()
 
     cron.schedule('*/5 * * * *', () => this.showMetrics())
-    cron.schedule('*/5 * * * *', () => this.purgeInactive())
+    cron.schedule('* * * * * *', () => this.purgeInactive())
 
     this.showMetrics()
   }
 
   purgeInactive(): void {
-    
+    this.users.forEach(user => {
+      if (user.lastPacketTime + ConfigServer.TIMEOUT > Date.now()) {
+        user.closeSocket();
+        return;
+      }
+    })
   }
 
   /**
