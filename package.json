@@ -31,21 +31,13 @@
           "^build"
         ],
         "outputs": [
-          ".next/**"
-        ]
-      },
-      "start": {
-        "dependsOn": [
-          "^build"
-        ],
-        "outputs": [
           ".next/**",
           "dist/**"
         ]
       },
-      "test": {
+      "start": {
         "dependsOn": [
-          "^build"
+          "build"
         ],
         "outputs": []
       },
