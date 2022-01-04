@@ -15,7 +15,7 @@ class ModuleLoader {
       for (const file of files) {
         if (file.endsWith('.js') && !file.endsWith('.bak.js')) {
           const packetClass = await import(packetsDir + file);
-          const packetClassInstance: PacketBase = new packetClass();
+          const packetClassInstance: PacketBase = new packetClass.default();
           nextPackets.push(packetClassInstance);
         }
       }
@@ -23,7 +23,7 @@ class ModuleLoader {
       
     }
     this.#packets.length = 0;
-    // this.#packets.push(...nextPackets);
+    this.#packets.push(...nextPackets);
   }
 
   getPacketHandler(type: number, subType: number) {

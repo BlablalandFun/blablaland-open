@@ -64,8 +64,8 @@ export default class GameUser {
     if (this.state === UserState.DISCONNECTING) {
       return;
     }
-    
-    console.log({hadError})
+
+    console.log({ hadError })
 
     this.state = UserState.DISCONNECTING;
     this.cameraList.forEach(camera => {
