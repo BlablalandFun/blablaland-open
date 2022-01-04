@@ -1,6 +1,4 @@
 import { Socket } from 'net';
-import maps from '../../files/maps.json';
-import servers from '../../files/servers.json';
 import GP from '../libs/GP.js';
 import { LimitedInteger } from '../libs/LimitedInteger.js';
 import { SocketMessage } from '../libs/network/Binary.js';
@@ -10,6 +8,7 @@ import Camera from '../libs/users/Camera.js';
 import UserState from '../libs/users/UserState.js';
 import Walker from '../libs/users/Walker.js';
 import app from '../services/app.js';
+import { DBMaps, DBServers } from '../services/definitions.js';
 import { InterfaceEvent, PacketDefinition } from '../types/server.js';
 import { PhysicEvent } from '../types/user';
 
@@ -186,7 +185,7 @@ export default class GameUser {
         })
         sm.bitWriteBoolean(false)
 
-        maps.forEach((map) => {
+        DBMaps.forEach((map) => {
           sm.bitWriteBoolean(true)
           sm.bitWriteUnsignedInt(GP.BIT_MAP_ID, map.id)
           sm.bitWriteUnsignedInt(GP.BIT_MAP_FILEID, map.fileId)
@@ -202,7 +201,7 @@ export default class GameUser {
 
         sm.bitWriteBoolean(false)
 
-        servers.forEach((server) => { // écriture des serveurs
+        DBServers.forEach((server) => { // écriture des serveurs
           sm.bitWriteBoolean(true)
           sm.bitWriteString(server.nom)
           sm.bitWriteUnsignedInt(16, server.port)

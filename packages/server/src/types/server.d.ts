@@ -1,5 +1,3 @@
-import servers from '../files/servers.json';
-
 export type ServerDefinition = {
   id: number;
   port: number;
@@ -17,6 +15,14 @@ export type MapDefinition = {
   peace: number;
   regionId: number;
   planetId: number;
+}
+
+export type ObjectDefinition = {
+  id: number;
+  fxFileId: number;
+  visibility: number;
+  genre: number;
+  expireAt: number;
 }
 
 export type PacketDefinition = {

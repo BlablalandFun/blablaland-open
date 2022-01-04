@@ -1,14 +1,13 @@
 import crypto from 'crypto';
-import maps from '../../files/maps.json' assert { type: 'json' };
-import servers from '../../files/servers.json' assert { type: 'json' };
+import cron from 'node-cron';
+import { ConfigServer } from '../config/server.js';
 import FlashServer from '../containers/FlashServer.js';
 import GameMap from "../containers/GameMap.js";
 import GameServer from "../containers/GameServer.js";
 import GameUser from "../containers/GameUser.js";
+import { ObjectDefinition } from '../types/server';
+import { DBMaps, DBObjects, DBServers } from './definitions.js';
 
-import cron from 'node-cron';
-import ms from 'ms';
-import { ConfigServer } from '../config/server.js';
 
 export class Application {
 
@@ -16,13 +15,13 @@ export class Application {
   readonly users: GameUser[] = [];
   readonly maps: GameMap[] = [];
   readonly servers: GameServer[] = [];
+  readonly objects: ObjectDefinition[] = [...DBObjects];
 
   async init() {
     await this.initServers()
 
     cron.schedule('*/5 * * * *', () => this.showMetrics())
     cron.schedule('* * * * * *', () => this.purgeInactive())
-
     this.showMetrics()
   }
 
@@ -47,10 +46,10 @@ export class Application {
 
   async initServers() {
     new FlashServer()
-    servers.forEach(server => {
+    DBServers.forEach(server => {
       const gameServer = new GameServer(server);
       this.servers.push(gameServer);
-      gameServer.setup(maps);
+      gameServer.setup(DBMaps);
     })
     return
   }
