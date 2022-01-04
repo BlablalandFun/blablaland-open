@@ -7,23 +7,32 @@ class ModuleLoader {
   readonly #packets: PacketBase[] = [];
 
   async loadPackets() {
-    
+
     const nextPackets = [];
     const packetsDir = app.projectRoot + '/modules/packets/';
+
+    const files: string[] = [];
     try {
-      const files = await fs.readdir(packetsDir);
-      for (const file of files) {
-        if (file.endsWith('.js') && !file.endsWith('.bak.js')) {
+      files.push(...await fs.readdir(packetsDir));
+    } catch (e) {
+      console.error(e);
+    }
+
+    for (const file of files) {
+      if (file.endsWith('.js') && !file.endsWith('.bak.js')) {
+        try {
           const packetClass = await import(packetsDir + file);
           const packetClassInstance: PacketBase = new packetClass.default();
           nextPackets.push(packetClassInstance);
+        } catch (exc) {
+          console.error(exc);
         }
       }
-    } catch (e) {
-      
     }
     this.#packets.length = 0;
     this.#packets.push(...nextPackets);
+
+    console.log(`Loader[count=${this.#packets.length}, type=PACKET]`);
   }
 
   getPacketHandler(type: number, subType: number) {

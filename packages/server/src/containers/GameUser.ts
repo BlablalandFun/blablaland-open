@@ -15,7 +15,7 @@ import { PhysicEvent } from '../types/user';
 
 export default class GameUser {
 
-  static readonly #LAST_PID: LimitedInteger = new LimitedInteger(0, (2 ** 24) - 1);
+  static readonly LAST_PID: LimitedInteger = new LimitedInteger(0, (2 ** 24) - 1);
   static readonly #MAX_CMPT = 65530
 
   readonly #outCmpt: LimitedInteger = new LimitedInteger(12, GameUser.#MAX_CMPT)
@@ -65,8 +65,6 @@ export default class GameUser {
       return;
     }
 
-    console.log({ hadError })
-
     this.state = UserState.DISCONNECTING;
     this.cameraList.forEach(camera => {
       camera.methodeId = GP.BIT_METHODE_APPARITION;
@@ -104,7 +102,7 @@ export default class GameUser {
             const packetHandler = loader.getPacketHandler(packetType, packetSubType);
             if (packetHandler) {
               await packetHandler.handle(this, {
-                packetBinary: socketMessage,
+                binary: socketMessage,
                 subType: packetSubType,
               });
             } else {
@@ -124,115 +122,7 @@ export default class GameUser {
 
     console.log(`Packet[type=${packet.type}, subType=${packet.subType}]`)
 
-    if (packet.type === 1) {
-      if (packet.subType === 1) {
-        // GetTime
-        this.time = packet.binary.bitReadUnsignedInt(32);
-
-        const time = Date.now();
-        const sm = new SocketMessage(1, 1);
-        sm.bitWriteUnsignedInt(32, time / 1000);
-        sm.bitWriteUnsignedInt(10, time % 1000);
-        this.send(sm);
-      } else if (packet.subType === 2) {
-        // login
-        const sm = new SocketMessage(2, 1);
-        sm.bitWriteUnsignedInt(GP.BIT_USER_ID, this.playerId) // userId
-        sm.bitWriteString(this.username) // pseudo
-        sm.bitWriteUnsignedInt(GP.BIT_GRADE, 9999) // grade
-        sm.bitWriteUnsignedInt(32, 9999) // xp
-        this.send(sm);
-      } else if (packet.subType === 3) { // AskPid
-        if (this.playerId === 0) {
-          this.playerId = GameUser.#LAST_PID.increment();
-
-          const sm = new SocketMessage(1, 3);
-          sm.bitWriteUnsignedInt(24, this.playerId);
-          this.send(sm);
-        }
-      } else if (packet.subType === 4) {
-        const text = packet.binary.bitReadString();
-        const action = packet.binary.bitReadUnsignedInt(3);
-        const camera = this.cameraList[0];
-        if (!camera) {
-          return;
-        }
-
-        const event: InterfaceEvent = {
-          serverId: this.serverId,
-          pid: this.playerId,
-          uid: this.playerId, // this.userId
-          pseudo: this.username,
-          text,
-          action
-        };
-        camera.currMap?.onMessageMap(event, this.walker.sex);
-      } else if (packet.subType === 6) {
-        // ask variables
-        const transportList = [
-          new Transport(1),
-        ]
-
-        const sm = new SocketMessage(1, 4)
-        transportList.forEach((transport) => {
-          sm.bitWriteBoolean(true)
-          sm.bitWriteUnsignedInt(GP.BIT_TRANSPORT_ID, transport.id)
-
-          if (transport.maps.length) { // on écrit les maps
-            sm.bitWriteBoolean(true)
-            sm.bitWriteUnsignedInt(4, 0)
-            transport.maps.map((map) => {
-              sm.bitWriteBoolean(true)
-              sm.bitWriteUnsignedInt(GP.BIT_MAP_ID, map)
-            })
-            sm.bitWriteBoolean(false)
-          }
-
-          if (transport.values.length) {
-            sm.bitWriteBoolean(true)
-            sm.bitWriteUnsignedInt(4, 1)
-            transport.values.forEach((value) => {
-              sm.bitWriteBoolean(true)
-              sm.bitWriteUnsignedInt(10, value.time)
-              sm.bitWriteUnsignedInt(5, value.value)
-            })
-            sm.bitWriteBoolean(false)
-          }
-          sm.bitWriteBoolean(false)
-        })
-        sm.bitWriteBoolean(false)
-
-        DBMaps.forEach((map) => {
-          sm.bitWriteBoolean(true)
-          sm.bitWriteUnsignedInt(GP.BIT_MAP_ID, map.id)
-          sm.bitWriteUnsignedInt(GP.BIT_MAP_FILEID, map.fileId)
-          sm.bitWriteString(map.nom)
-          sm.bitWriteUnsignedInt(GP.BIT_TRANSPORT_ID, map.transportId)
-          sm.bitWriteSignedInt(17, map.mapXpos)
-          sm.bitWriteSignedInt(17, map.mapYpos)
-          sm.bitWriteUnsignedInt(5, map.meteoId)
-          sm.bitWriteUnsignedInt(2, map.peace)
-          sm.bitWriteUnsignedInt(GP.BIT_MAP_REGIONID, map.regionId)
-          sm.bitWriteUnsignedInt(GP.BIT_MAP_PLANETID, map.planetId)
-        })
-
-        sm.bitWriteBoolean(false)
-
-        DBServers.forEach((server) => { // écriture des serveurs
-          sm.bitWriteBoolean(true)
-          sm.bitWriteString(server.nom)
-          sm.bitWriteUnsignedInt(16, server.port)
-        })
-        sm.bitWriteBoolean(false)
-
-        sm.bitWriteUnsignedInt(GP.BIT_SERVER_ID, this.serverId)
-        sm.bitWriteUnsignedInt(8, 1)
-        this.send(sm)
-
-      } else if (packet.subType === 17) {
-        // packet pour la webradio
-      }
-    } else if (packet.type === 2) {
+    if (packet.type === 2) {
       // packet de déplacement du joueur
       if (packet.subType === 1 || packet.subType === 2) {
 

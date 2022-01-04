@@ -1,14 +1,23 @@
-import GameUser from "../../containers/GameUser";
-import { SocketMessage } from "../../libs/network/Binary";
-import { PacketParams } from "../../types/network";
-import { PacketBase } from "../PacketBase";
+import GameUser from "../../containers/GameUser.js";
+import { SocketMessage } from "../../libs/network/Binary.js";
+import { PacketParams } from "../../types/network.js";
+import { PacketBase } from "../PacketBase.js";
 
 export default class GetPid implements PacketBase {
   type: number = 1;
   subType: number = 3;
 
-  handle(user: GameUser, params: PacketParams): Promise<boolean> {
-    throw new Error("Method not implemented.");
+  async handle(user: GameUser, params: PacketParams): Promise<boolean> {
+    if (user.playerId === 0) {
+      user.playerId = GameUser.LAST_PID.increment();
+
+      const sm = new SocketMessage(1, 3);
+      sm.bitWriteUnsignedInt(24, user.playerId);
+      user.send(sm);
+
+      return true;
+    }
+    return false
   }
 
 }
