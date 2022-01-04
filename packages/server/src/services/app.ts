@@ -7,6 +7,7 @@ import GameServer from "../containers/GameServer.js";
 import GameUser from "../containers/GameUser.js";
 import { ObjectDefinition } from '../types/server';
 import { DBMaps, DBObjects, DBServers } from './definitions.js';
+import loader from './loader.js';
 
 
 export class Application {
@@ -17,17 +18,27 @@ export class Application {
   readonly servers: GameServer[] = [];
   readonly objects: ObjectDefinition[] = [...DBObjects];
 
-  async init() {
+  #projectRoot?: string;
+
+  async init(rootDir: string) {
+    this.#projectRoot = rootDir;
+
     await this.initServers()
 
+    loader.loadPackets();
+
     cron.schedule('*/5 * * * *', () => this.showMetrics())
-    cron.schedule('* * * * * *', () => this.purgeInactive())
+    // cron.schedule('* * * * * *', () => this.purgeInactive())
     this.showMetrics()
   }
 
+  get projectRoot() {
+    return this.#projectRoot;
+  }
+
   purgeInactive(): void {
-    this.users.forEach(user => {
-      if (user.lastPacketTime + ConfigServer.TIMEOUT > Date.now()) {
+    this.users.filter(user => user.lastPacketTime !== 0).forEach(user => {
+      if (user.lastPacketTime + ConfigServer.TIMEOUT <= Date.now()) {
         user.closeSocket();
         return;
       }

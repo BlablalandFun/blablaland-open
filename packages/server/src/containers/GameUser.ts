@@ -9,6 +9,7 @@ import UserState from '../libs/users/UserState.js';
 import Walker from '../libs/users/Walker.js';
 import app from '../services/app.js';
 import { DBMaps, DBServers } from '../services/definitions.js';
+import loader from '../services/loader.js';
 import { InterfaceEvent, PacketDefinition } from '../types/server.js';
 import { PhysicEvent } from '../types/user';
 
@@ -63,6 +64,8 @@ export default class GameUser {
     if (this.state === UserState.DISCONNECTING) {
       return;
     }
+    
+    console.log({hadError})
 
     this.state = UserState.DISCONNECTING;
     this.cameraList.forEach(camera => {
@@ -97,7 +100,21 @@ export default class GameUser {
             binary: socketMessage,
           }
 
-          await this.#parsePacket(identity);
+          try {
+            const packetHandler = loader.getPacketHandler(packetType, packetSubType);
+            if (packetHandler) {
+              await packetHandler.handle(this, {
+                packetBinary: socketMessage,
+                subType: packetSubType,
+              });
+            } else {
+              await this.#parsePacket(identity);
+            }
+          } catch (e) {
+            console.log(e)
+          }
+
+          this.lastPacketTime = Date.now();
         }
       }
     }
@@ -105,7 +122,7 @@ export default class GameUser {
 
   async #parsePacket(packet: PacketDefinition) {
 
-    //console.log(`Packet[type=${packet.type}, subType=${packet.subType}]`)
+    console.log(`Packet[type=${packet.type}, subType=${packet.subType}]`)
 
     if (packet.type === 1) {
       if (packet.subType === 1) {
@@ -312,8 +329,6 @@ export default class GameUser {
         }
       }
     }
-
-    this.lastPacketTime = Date.now();
   }
 
   send(binary?: SocketMessage) {
