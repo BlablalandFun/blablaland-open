@@ -20,7 +20,7 @@
     "typescript": "^4.5.4"
   },
   "scripts": {
-    "build": "npx swc src/ --out-dir=dist/",
+    "build": "swc src/ --out-dir=dist/",
     "start": "node --experimental-json-modules dist/index.js",
     "dev": "nodemon",
     "test": "jest"
