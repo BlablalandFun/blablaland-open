@@ -6,9 +6,12 @@ import { PacketBase } from "../PacketBase.js";
 
 export default class Login implements PacketBase {
   type: number = 1;
-  subType: number = 3;
+  subType: number = 2;
 
   async handle(user: GameUser, params: PacketParams): Promise<boolean> {
+
+    console.log('ici')
+
     const sm = new SocketMessage(2, 1);
     sm.bitWriteUnsignedInt(GP.BIT_USER_ID, user.playerId) // userId
     sm.bitWriteString(user.username) // pseudo

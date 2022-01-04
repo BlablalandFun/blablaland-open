@@ -23,6 +23,9 @@ class ModuleLoader {
         try {
           const packetClass = await import(packetsDir + file);
           const packetClassInstance: PacketBase = new packetClass.default();
+          if (Array.isArray(packetClassInstance.subType)) {
+            
+          }
           nextPackets.push(packetClassInstance);
         } catch (exc) {
           console.error(exc);
@@ -36,7 +39,12 @@ class ModuleLoader {
   }
 
   getPacketHandler(type: number, subType: number) {
-    return this.#packets.find(packet => packet.type === type && packet.subType === subType);
+    return this.#packets.find(packet => {
+      if (Array.isArray(packet.subType)) {
+        return packet.type === type && packet.subType.includes(subType);
+      }
+      return packet.type === type && packet.subType === subType;
+    });
   }
 }
 

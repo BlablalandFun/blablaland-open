@@ -5,7 +5,7 @@ import { PacketBase } from "../PacketBase.js";
 
 export default class SendMapMessage implements PacketBase {
   type: number = 1;
-  subType: number = 3;
+  subType: number = 4;
 
   async handle(user: GameUser, params: PacketParams): Promise<boolean> {
     const packet = params.binary;
