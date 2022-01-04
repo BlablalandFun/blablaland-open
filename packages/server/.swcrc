@@ -1,0 +1,20 @@
+{
+  "test": ".*.ts$",
+  "jsc": {
+    "target": "es2018",
+    "keepClassNames": true,
+    "parser": {
+      "syntax": "typescript",
+      "tsx": false,
+      "decorators": false,
+      "dynamicImport": false
+    }
+  },
+  "module": {
+    "type": "es6",
+    "strict": true,
+    "strictMode": true,
+    "lazy": false,
+    "noInterop": true
+  }
+}

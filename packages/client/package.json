@@ -1,5 +1,5 @@
 {
-  "name": "open-server",
+  "name": "@blablaland/client",
   "private": true,
   "scripts": {
     "dev": "next dev",
