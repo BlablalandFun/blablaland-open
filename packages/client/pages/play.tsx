@@ -15,7 +15,7 @@ function toFlashVars(value: object) {
 const Home: NextPage = () => {
   const FLASH_VARS: object = {
     SESSION: "TEST_SESSION",
-    DAILYMSG: "Message du jour",
+    DAILYMSG: "Projet open-source",
     DAILYMSGSECU: "Message de sécurité",
     CACHE_VERSION: 1,
   };
@@ -25,14 +25,11 @@ const Home: NextPage = () => {
       <div className="mt-4">
         <Image src={logo} alt="logo" />
       </div>
-      <div className="flex-1 flex flex-col bg-white/10 backdrop-blur container rounded-xl my-4">
+      <div className="flex flex-col bg-white/10 backdrop-blur rounded-xl my-4">
         <div className="p-5">
           <h1 className="font-medium text-2xl text-slate-100">Serveur de développement</h1>
-          <p className="pt-2 text-slate-300 text-sm">
-            Il est <u>déconseillé</u> de l'utiliser en production !
-          </p>
         </div>
-        <div className="self-center">
+        <div className="self-center max-w-[950px] max-h-[560px]">
           <embed
             // @ts-expect-error
             flashvars={new URLSearchParams(toFlashVars(FLASH_VARS)).toString()}
@@ -43,8 +40,9 @@ const Home: NextPage = () => {
             width="950"
           />
         </div>
-        <div className="px-3 py-2 border-white/50 inline-flex items-center justify-end">
-          <span className="text-xs text-slate-400 text-right">Développé par l'équipe de Blablaland.fun</span>
+        <div className="px-3 py-2 border-white/50 inline-flex items-center text-xs text-slate-400">
+          <span className="flex-1 justify-items-start">Déconseillé en production</span>
+          <span className="flex-1 text-right justify-self-end">Développé par l'équipe de Blablaland.fun</span>
         </div>
       </div>
     </div>
