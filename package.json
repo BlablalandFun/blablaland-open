@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Yovach/blablaland-open-server.git"
+    "url": "git+https://github.com/Yovach/blablaland-open.git"
   },
   "keywords": [],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Yovach/blablaland-open-server/issues"
+    "url": "https://github.com/Yovach/blablaland-open/issues"
   },
-  "homepage": "https://github.com/Yovach/blablaland-open-server#readme",
+  "homepage": "https://github.com/Yovach/blablaland-open#readme",
   "devDependencies": {
     "turbo": "^1.0.24"
   },
@@ -51,7 +51,6 @@
   },
   "scripts": {
     "dev": "turbo run dev",
-    "build": "turbo run build",
     "start": "turbo run start"
   }
 }
