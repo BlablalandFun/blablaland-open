@@ -23,6 +23,10 @@
   "workspaces": [
     "packages/**"
   ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "engineStrict": true,
   "turbo": {
     "baseBranch": "origin/main",
     "pipeline": {
