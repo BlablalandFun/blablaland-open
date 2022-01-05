@@ -5,10 +5,10 @@ import { PacketParams } from "../../types/network.js";
 import { PacketBase } from "../PacketBase.js";
 
 export default class Login implements PacketBase {
-  type: number = 1;
-  subType: number = 2;
+  type = 1;
+  subType = 2;
 
-  async handle(user: GameUser, params: PacketParams): Promise<boolean> {
+  async handle(user: GameUser, _params: PacketParams): Promise<boolean> {
 
     console.log('ici')
 

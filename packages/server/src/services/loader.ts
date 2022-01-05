@@ -23,9 +23,9 @@ class ModuleLoader {
         try {
           const packetClass = await import(packetsDir + file);
           const packetClassInstance: PacketBase = new packetClass.default();
-          if (Array.isArray(packetClassInstance.subType)) {
+          // if (Array.isArray(packetClassInstance.subType)) {
             
-          }
+          // }
           nextPackets.push(packetClassInstance);
         } catch (exc) {
           console.error(exc);

@@ -4,8 +4,8 @@ const powList = (i: number): number => 2 ** i
 
 export default class Binary extends Array {
 
-  bitPosition: number = 0
-  bitLength: number = 0
+  bitPosition = 0
+  bitLength = 0
 
   static Rshift (param1: number, param2: number): number {
     return Math.floor(param1 / powList(param2))

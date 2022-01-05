@@ -4,8 +4,8 @@ import { InterfaceEvent } from "../../types/server.js";
 import { PacketBase } from "../PacketBase.js";
 
 export default class SendMapMessage implements PacketBase {
-  type: number = 1;
-  subType: number = 4;
+  type = 1;
+  subType = 4;
 
   async handle(user: GameUser, params: PacketParams): Promise<boolean> {
     const packet = params.binary;

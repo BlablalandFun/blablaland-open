@@ -1,6 +1,6 @@
 import GP from "../libs/GP.js";
 import { except } from "../libs/helpers.js";
-import Binary, { SocketMessage } from "../libs/network/Binary.js";
+import { SocketMessage } from "../libs/network/Binary.js";
 import Camera from "../libs/users/Camera.js";
 import app from "../services/app.js";
 import { InterfaceEvent, MapDefinition } from "../types/server";

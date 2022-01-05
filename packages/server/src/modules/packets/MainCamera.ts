@@ -6,10 +6,10 @@ import { PacketParams } from "../../types/network.js";
 import { PacketBase } from "../PacketBase.js";
 
 export default class MainCamera implements PacketBase {
-  type: number = 3;
-  subType: number = 3;
+  type = 3;
+  subType = 3;
 
-  async handle(user: GameUser, params: PacketParams): Promise<boolean> {
+  async handle(user: GameUser, _params: PacketParams): Promise<boolean> {
 
     const targetMap = user.server?.getMapBy(map => map.id === 9)
     if (!targetMap) {

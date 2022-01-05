@@ -6,7 +6,7 @@ import { PhysicEvent } from "../../types/user.js";
 import { PacketBase } from "../PacketBase.js";
 
 export default class MoveWalker implements PacketBase {
-  type: number = 2;
+  type = 2;
   subType: number[] = [1, 2];
 
   async handle(user: GameUser, params: PacketParams): Promise<boolean> {
@@ -34,6 +34,10 @@ export default class MoveWalker implements PacketBase {
 
     const camera = user.cameraList[0]
     if (!camera) {
+      return false;
+    }
+
+    if (camera.currMap?.id !== mapId) {
       return false;
     }
 

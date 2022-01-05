@@ -1,4 +1,3 @@
-import ms from 'ms';
 import { createServer, Server, Socket } from 'net';
 import { ConfigServer } from '../config/server.js';
 import app from '../services/app.js';
@@ -12,7 +11,7 @@ export default class GameServer {
   readonly #server: Server;
   static #DEFAULT_SERVER_ID = 12301;
 
-  users: any[] = [];
+  users: GameUser[] = [];
 
   constructor(readonly definition: ServerDefinition) {
     this.#server = createServer(this.#onHandleUser);

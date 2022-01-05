@@ -17,12 +17,12 @@ export default class GameUser {
   readonly #outCmpt: LimitedInteger = new LimitedInteger(12, GameUser.#MAX_CMPT)
   readonly #inCmpt: LimitedInteger = new LimitedInteger(12, GameUser.#MAX_CMPT)
 
-  lastPacketTime: number = 0;
+  lastPacketTime = 0;
 
   #buffer: MessageData = new MessageData(0);
 
-  time: number = 0;
-  playerId: number = 0;
+  time = 0;
+  playerId = 0;
 
   state = UserState.PLAYING;
 
@@ -56,7 +56,7 @@ export default class GameUser {
     this.socket.destroy();
   }
 
-  onDisconnect = async (hadError: boolean) => {
+  onDisconnect = async (_hadError: boolean) => {
     if (this.state === UserState.DISCONNECTING) {
       return;
     }

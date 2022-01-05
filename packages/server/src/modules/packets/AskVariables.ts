@@ -7,10 +7,10 @@ import { PacketParams } from "../../types/network.js";
 import { PacketBase } from "../PacketBase.js";
 
 export default class AskVariables implements PacketBase {
-  type: number = 1;
-  subType: number = 6;
+  type = 1;
+  subType = 6;
 
-  async handle(user: GameUser, params: PacketParams): Promise<boolean> {
+  async handle(user: GameUser, _params: PacketParams): Promise<boolean> {
     // ask variables
     const transportList = [
       new Transport(1),
