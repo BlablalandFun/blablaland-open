@@ -1,0 +1,16 @@
+{
+  "name": "@blablaland/db",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "dependencies": {
+    "@prisma/client": "^3.7.0",
+    "better-sqlite3": "^7.4.6"
+  },
+  "exports": {
+    "default": "./index.js"
+  },
+  "devDependencies": {
+    "prisma": "^3.7.0"
+  }
+}
