@@ -3,9 +3,9 @@
   "private": true,
   "type": "module",
   "main": "index.js",
+  "typings": "index.d.ts",
   "dependencies": {
-    "@prisma/client": "^3.7.0",
-    "better-sqlite3": "^7.4.6"
+    "@prisma/client": "^3.7.0"
   },
   "exports": {
     "default": "./index.js"
