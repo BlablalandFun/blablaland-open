@@ -3,6 +3,7 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import { FormEvent } from "react";
 import logo from "../assets/logo_blablaland.png";
+import { Layout } from "../components/Layout";
 
 const Home: NextPage = () => {
   async function onSubmit(evt: FormEvent<HTMLFormElement>) {
@@ -22,11 +23,7 @@ const Home: NextPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-900 to-gray-900">
-      <div className="mt-4">
-        <Image src={logo} alt="logo" />
-      </div>
-      <div className="flex-1 flex flex-col bg-white/10 backdrop-blur container rounded-xl my-4 max-w-md">
+    <Layout>
         <div className="p-5">
           <h1 className="font-medium text-2xl text-slate-100">Serveur de développement</h1>
           <p className="pt-2 text-slate-300 text-sm">
@@ -46,11 +43,7 @@ const Home: NextPage = () => {
           </div>
           <button className="self-center px-8 py-2 rounded-full font-medium text-white bg-sky-600 hover:bg-sky-700">Rejoindre le serveur</button>
         </form>
-        <div className="px-3 py-2 border-white/50 inline-flex items-center justify-end">
-          <span className="text-xs text-slate-400 text-right">Développé par l'équipe de Blablaland.fun</span>
-        </div>
-      </div>
-    </div>
+      </Layout>
   );
 };
 

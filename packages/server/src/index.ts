@@ -5,4 +5,4 @@ const __dirname = new URL('.', import.meta.url).pathname;
 app.init(__dirname);
 
 import { prisma } from '@blablaland/db';
-// console.log("site:", )
+console.log("site:", prisma)
