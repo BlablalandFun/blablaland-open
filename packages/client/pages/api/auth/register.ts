@@ -20,9 +20,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       errors["confirmPassword"] = "Tu dois confirmer ton mot de passe";
     }
   } else if (username.length < 3 || username.length > 12) {
-    errors["username"] = "Les mots de passe ne correspondent pas";
+    errors["username"] = "Le pseudo doit faire entre 3 et 12 caractères";
   } else if (password !== confirmPassword) {
-    errors["confirmPassword"] = "Le pseudo doit faire entre 3 et 12 caractères";
+    errors["confirmPassword"] = "Les mots de passe ne correspondent pas";
   }
 
   // on vérifie que le pseudo n'est pas déjà pris
