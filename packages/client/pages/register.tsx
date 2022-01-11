@@ -4,12 +4,13 @@ import Image from "next/image";
 import { FormEvent, useState } from "react";
 import logo from "../assets/logo_blablaland.png";
 import { Layout } from "../components/Layout";
+import cx from "classnames";
 
 type RegistrationErrors = {
   username?: string;
   password?: string;
   confirmPassword?: string;
-}
+};
 
 const RegisterPage: NextPage = () => {
   const [errors, setErrors] = useState<RegistrationErrors>({});
@@ -45,13 +46,11 @@ const RegisterPage: NextPage = () => {
           <input
             id="username"
             name="username"
-            className="px-1 py-1 text-white bg-transparent border-b-2 border-slate-500 focus:border-sky-500 focus:outline-none"
+            className={cx("px-1 py-1 text-white bg-transparent border-b-2 border-slate-500 focus:border-sky-500 focus:outline-none", {
+              "border-red-500 focus:border-red-600": errors.username,
+            })}
           />
-          {
-            errors.username && (
-              <small className="text-red-500 mt-1.5">{errors.username}</small>
-            )
-          }
+          {errors.username && <small className="text-red-500 mt-1.5">{errors.username}</small>}
         </div>
         <div className="flex flex-col gap-y-1">
           <label htmlFor="password" className="text-slate-100 font-medium">
@@ -61,13 +60,11 @@ const RegisterPage: NextPage = () => {
             id="password"
             name="password"
             type="password"
-            className="px-1 py-1 text-white bg-transparent border-b-2 border-slate-500 focus:border-sky-500 focus:outline-none"
+            className={cx("px-1 py-1 text-white bg-transparent border-b-2 border-slate-500 focus:border-sky-500 focus:outline-none", {
+              "border-red-500 focus:border-red-600": errors.password,
+            })}
           />
-          {
-            errors.password && (
-              <small className="text-red-500 mt-1.5">{errors.password}</small>
-            )
-          }
+          {errors.password && <small className="text-red-500 mt-1.5">{errors.password}</small>}
         </div>
         <div className="flex flex-col gap-y-1">
           <label htmlFor="confirmPassword" className="text-slate-100 font-medium">
@@ -77,13 +74,11 @@ const RegisterPage: NextPage = () => {
             id="confirmPassword"
             name="confirmPassword"
             type="password"
-            className="px-1 py-1 text-white bg-transparent border-b-2 border-slate-500 focus:border-sky-500 focus:outline-none"
+            className={cx("px-1 py-1 text-white bg-transparent border-b-2 border-slate-500 focus:border-sky-500 focus:outline-none", {
+              "border-red-500 focus:border-red-600": errors.confirmPassword,
+            })}
           />
-          {
-            errors.confirmPassword && (
-              <small className="text-red-500 mt-1.5">{errors.confirmPassword}</small>
-            )
-          }
+          {errors.confirmPassword && <small className="text-red-500 mt-1.5">{errors.confirmPassword}</small>}
         </div>
         <button className="self-center px-6 py-2 rounded-full font-medium text-white bg-sky-600 hover:bg-sky-700">Confirme ton inscription</button>
       </form>
