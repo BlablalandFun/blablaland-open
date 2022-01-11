@@ -1,11 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from "next";
-
-import bcrypt from "bcryptjs";
-
 import { prisma } from "@blablaland/db";
+import bcrypt from "bcryptjs";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { getJwtAuth } from "../../../src/helpers";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== "POST") {
+    return res.status(400).json({
+      error: { message: "Method not allowed" },
+    });
+  }
+
   const errors = {};
   const { password, username, confirmPassword } = req.body;
 
@@ -35,13 +40,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     errors["username"] = "Ce pseudo est déjà pris";
   }
 
-  console.log(errors)
   // il y a des erreurs
   if (Object.keys(errors).length > 0) {
     return res.status(400).json({ errors });
   }
 
   const hashedPassword = await bcrypt.hash(password, 7);
+
+  // on créé le user
   const user = await prisma.user.create({
     data: {
       username,
@@ -49,6 +55,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     },
   });
 
-  console.log(user);
+  const jwtToken = await getJwtAuth(user.id);
+  res.setHeader("Set-Cookie", `SESSION=${jwtToken}; HttpOnly; Path=/;`);
   return res.status(200).json({ errors });
 }
