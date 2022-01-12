@@ -5,12 +5,12 @@
   "main": "index.js",
   "typings": "index.d.ts",
   "dependencies": {
-    "@prisma/client": "^3.7.0"
+    "@prisma/client": "^3.8.0"
   },
   "exports": {
     "default": "./index.js"
   },
   "devDependencies": {
-    "prisma": "^3.7.0"
+    "prisma": "^3.8.0"
   }
 }
