@@ -4,6 +4,12 @@ import bcrypt from "bcryptjs";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getJwtAuth } from "../../../src/helpers";
 
+type RegistrationBody = {
+  username: string;
+  password: string;
+  confirmPassword: string;
+};
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return res.status(400).json({
@@ -12,7 +18,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const errors = {};
-  const { password, username, confirmPassword } = req.body;
+
+  const { password, username, confirmPassword } = req.body as RegistrationBody;
 
   if (!password || !username || !confirmPassword) {
     if (!username) {
@@ -33,10 +40,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // on vérifie que le pseudo n'est pas déjà pris
   const other = await prisma.user.findFirst({
     where: {
-      username,
+      protectedUsername: username.toLowerCase(),
     },
   });
   if (other) {
+    console.log(other);
     errors["username"] = "Ce pseudo est déjà pris";
   }
 
@@ -51,6 +59,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const user = await prisma.user.create({
     data: {
       username,
+      protectedUsername: username.toLowerCase(),
       password: hashedPassword,
     },
   });
