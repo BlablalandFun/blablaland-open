@@ -1,14 +1,27 @@
+import { CubeIcon, HomeIcon, PlayIcon, UserAddIcon, UserCircleIcon, UserIcon } from '@heroicons/react/solid';
 import Image from "next/image";
 import React, { PropsWithChildren } from "react";
 import logo from "../assets/logo_blablaland.png";
 import { useAuthContext } from "./AuthStore";
+import { LeftButton } from "./LeftButton";
 
 export function Layout(props: PropsWithChildren<{}>) {
   const auth = useAuthContext();
-  const username = auth?.data?.username;
+  // const username = auth?.data?.username;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-900 to-gray-900">
+      <div className="absolute left-4 flex flex-col gap-y-4">
+        <LeftButton title="Accueil" href="/">
+          <HomeIcon className="h-7" />
+        </LeftButton>
+        <LeftButton title="Jouer" href="/play">
+          <CubeIcon className="h-7" />
+        </LeftButton>
+        <LeftButton title="Mon compte" href="/">
+          <UserCircleIcon className="h-7" />
+        </LeftButton>
+      </div>
       <div className="mt-4">
         <Image src={logo} alt="logo" />
       </div>
