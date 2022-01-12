@@ -8,6 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.5",
     "bcryptjs": "^2.4.3",
     "classnames": "^2.2.6",
     "jose": "^4.3.7",
