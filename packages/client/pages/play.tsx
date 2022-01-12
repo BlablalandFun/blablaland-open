@@ -32,9 +32,9 @@ const Home: NextPage = () => {
         <div className="p-5 inline-flex items-center">
           <h1 className="flex-1 font-medium text-2xl text-slate-100">Serveur de développement</h1>
           {auth?.data?.username && (
-            <span className="font-medium text-2xl text-slate-100">
-              Connecté en tant que <span className="text-blue-300">{auth.data.username}</span>
-            </span>
+            <a title="Gérer mon compte" href="/my-account" className="font-medium text-2xl text-blue-300 hover:text-blue-400">
+              {auth.data.username}
+            </a>
           )}
         </div>
         <div className="self-center max-w-[950px] max-h-[560px]">
