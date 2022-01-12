@@ -86,7 +86,10 @@ const RegisterPage: NextPage = () => {
           />
           {errors.confirmPassword && <small className="text-red-500 mt-1.5">{errors.confirmPassword}</small>}
         </div>
-        <button className="self-center px-6 py-2 rounded-full font-medium text-white bg-sky-600 hover:bg-sky-700">Confirme ton inscription</button>
+        <div className="flex gap-x-4">
+          <button className="flex-1 self-start px-6 py-2 rounded-full font-medium text-white bg-sky-600 hover:bg-sky-700">S'inscire</button>
+          <a href="/login" className="self-end px-6 py-2 rounded-full font-medium text-white bg-teal-600 hover:bg-teal-700">Déjà inscrit ?</a>
+        </div>
       </form>
     </Layout>
   );
