@@ -4,6 +4,11 @@ import bcrypt from "bcryptjs";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getJwtAuth } from "../../../src/helpers";
 
+type LoginBody = {
+  username: string;
+  password: string;
+};
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return res.status(400).json({
@@ -12,12 +17,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const errors = {};
-  const { password, username } = req.body;
+  const { password, username } = req.body as LoginBody;
 
   // on vérifie que le pseudo n'est pas déjà pris
   const user = await prisma.user.findFirst({
     where: {
-      username,
+      protectedUsername: username.toLowerCase(),
     },
   });
 
