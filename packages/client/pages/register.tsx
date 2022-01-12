@@ -1,11 +1,8 @@
-import type { NextPage } from "next";
-
-import Image from "next/image";
-import { FormEvent, useState } from "react";
-import logo from "../assets/logo_blablaland.png";
-import { Layout } from "../components/Layout";
 import cx from "classnames";
+import type { NextPage } from "next";
 import Router from "next/router";
+import { FormEvent, useState } from "react";
+import { Layout } from "../components/Layout";
 
 type RegistrationErrors = {
   username?: string;
