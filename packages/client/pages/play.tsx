@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 
 import Image from "next/image";
 import logo from "../assets/logo_blablaland.png";
+import { useAuthContext } from "../components/AuthStore";
 
 function toFlashVars(value: object) {
   const entries = Object.entries(value).map(([key, value]) => [key, value]);
@@ -20,14 +21,21 @@ const Home: NextPage = () => {
     CACHE_VERSION: 1,
   };
 
+  const auth = useAuthContext();
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-900 to-gray-900">
       <div className="mt-4">
         <Image src={logo} alt="logo" />
       </div>
       <div className="flex flex-col bg-white/10 backdrop-blur rounded-xl my-4">
-        <div className="p-5">
-          <h1 className="font-medium text-2xl text-slate-100">Serveur de développement</h1>
+        <div className="p-5 inline-flex items-center">
+          <h1 className="flex-1 font-medium text-2xl text-slate-100">Serveur de développement</h1>
+          {auth?.data?.username && (
+            <span className="font-medium text-2xl text-slate-100">
+              Connecté en tant que <span className="text-blue-300">{auth.data.username}</span>
+            </span>
+          )}
         </div>
         <div className="self-center max-w-[950px] max-h-[560px]">
           <embed

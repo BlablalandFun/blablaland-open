@@ -5,6 +5,7 @@ import { FormEvent, useState } from "react";
 import logo from "../assets/logo_blablaland.png";
 import { Layout } from "../components/Layout";
 import cx from "classnames";
+import Router from "next/router";
 
 type RegistrationErrors = {
   username?: string;
@@ -14,6 +15,8 @@ type RegistrationErrors = {
 
 const RegisterPage: NextPage = () => {
   const [errors, setErrors] = useState<RegistrationErrors>({});
+
+  const [remaining, setRemaining] = useState(0);
 
   async function onSubmit(evt: FormEvent<HTMLFormElement>) {
     evt.preventDefault();
@@ -30,6 +33,9 @@ const RegisterPage: NextPage = () => {
     const res = await req.json();
 
     setErrors(res.errors ?? {});
+    if (Object.entries(res.errors).length === 0) {
+      Router.push("/play");
+    }
     console.log(res);
   }
 
@@ -39,6 +45,9 @@ const RegisterPage: NextPage = () => {
         <h1 className="font-medium text-2xl text-slate-100">Inscris-toi !</h1>
       </div>
       <form className="flex flex-col p-5 gap-y-10 flex-1" onSubmit={onSubmit}>
+        {/* <div className="flex justify-center p-4 text-green-900 font-medium bg-green-300 border border-green-400 rounded-xl">
+          Votre compte a été créé avec succès, redirection dans 5 secondes..
+        </div> */}
         <div className="flex flex-col gap-y-1">
           <label htmlFor="username" className="text-slate-100 font-medium">
             Entre ton nom d'utilisateur :
