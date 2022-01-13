@@ -1,11 +1,16 @@
-import { CubeIcon, HomeIcon, PlayIcon, UserAddIcon, UserCircleIcon, UserIcon } from '@heroicons/react/solid';
+import { CubeIcon, HomeIcon, PlayIcon, UserAddIcon, UserCircleIcon, UserIcon } from "@heroicons/react/solid";
 import Image from "next/image";
 import React, { PropsWithChildren } from "react";
 import logo from "../assets/logo_blablaland.png";
 import { useAuthContext } from "./AuthStore";
+import Footer from "./Footer";
 import { LeftButton } from "./LeftButton";
 
-export function Layout(props: PropsWithChildren<{}>) {
+type LayoutProps = {
+  className?: string;
+}
+
+export function Layout(props: PropsWithChildren<LayoutProps>) {
   const auth = useAuthContext();
   const isLogged = auth?.data?.username !== undefined;
 
@@ -22,20 +27,10 @@ export function Layout(props: PropsWithChildren<{}>) {
           <UserCircleIcon className="h-7" />
         </LeftButton>
       </div>
-      <div className="mt-4">
-        <Image src={logo} alt="logo" />
-      </div>
-      <div className="flex-1 flex flex-col bg-white/10 backdrop-blur container rounded-xl my-4 max-w-md">
+      <div className="mt-4">{/* <Image src={logo} alt="logo" /> */}</div>
+      <div className={props.className ?? "flex-1 flex flex-col bg-white/10 backdrop-blur container rounded-xl my-4 max-w-md"}>
         {props.children}
-        <div className="px-3 py-2 border-white/50 inline-flex items-center text-xs">
-          {/* {username && <span className="text-emerald-400">{username}</span>} */}
-          <span className="flex-1 text-right text-slate-400">
-            Développé par l'équipe de{" "}
-            <a className="text-blue-300 hover:text-blue-400" href="https://blablaland.fun">
-              Blablaland.fun
-            </a>
-          </span>
-        </div>
+        <Footer />
       </div>
     </div>
   );
