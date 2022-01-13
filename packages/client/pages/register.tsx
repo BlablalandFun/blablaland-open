@@ -1,13 +1,35 @@
 import cx from "classnames";
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import Router from "next/router";
+import nookies, { destroyCookie } from "nookies";
 import { FormEvent, useState } from "react";
 import { Layout } from "../components/Layout";
+import { checkJwtAuth } from "../src/helpers";
 
 type RegistrationErrors = {
   username?: string;
   password?: string;
   confirmPassword?: string;
+};
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { SESSION } = nookies.get(ctx);
+  if (SESSION) {
+    try {
+      await checkJwtAuth(SESSION);
+      return {
+        props: {},
+        redirect: {
+          destination: "/",
+        },
+      };
+    } catch (err) {
+      destroyCookie(ctx, "SESSION");
+    }
+  }
+  return {
+    props: {},
+  };
 };
 
 const RegisterPage: NextPage = () => {
@@ -88,7 +110,9 @@ const RegisterPage: NextPage = () => {
         </div>
         <div className="flex gap-x-4">
           <button className="flex-1 self-start px-6 py-2 rounded-full font-medium text-white bg-sky-600 hover:bg-sky-700">S'inscire</button>
-          <a href="/login" className="self-end px-6 py-2 rounded-full font-medium text-white bg-teal-600 hover:bg-teal-700">Déjà inscrit ?</a>
+          <a href="/login" className="self-end px-6 py-2 rounded-full font-medium text-white bg-teal-600 hover:bg-teal-700">
+            Déjà inscrit ?
+          </a>
         </div>
       </form>
     </Layout>
