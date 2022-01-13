@@ -20,5 +20,4 @@ export default class GetTime implements PacketBase {
     user.send(sm);
     return true;
   }
-
 }

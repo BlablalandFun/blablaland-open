@@ -2,7 +2,7 @@ export type ServerDefinition = {
   id: number;
   port: number;
   nom: string;
-}
+};
 
 export type MapDefinition = {
   id: number;
@@ -15,7 +15,7 @@ export type MapDefinition = {
   peace: number;
   regionId: number;
   planetId: number;
-}
+};
 
 export type ObjectDefinition = {
   id: number;
@@ -23,14 +23,13 @@ export type ObjectDefinition = {
   visibility: number;
   genre: number;
   expireAt: number;
-}
+};
 
 export type PacketDefinition = {
   type: number;
   subType: number;
   binary: SocketMessage;
-}
-
+};
 
 export type InterfaceEvent = {
   action?: number;
@@ -39,4 +38,4 @@ export type InterfaceEvent = {
   pseudo: string;
   serverId?: number;
   text: string;
-}
+};

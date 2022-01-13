@@ -17,7 +17,6 @@ export default class GetPid implements PacketBase {
 
       return true;
     }
-    return false
+    return false;
   }
-
 }

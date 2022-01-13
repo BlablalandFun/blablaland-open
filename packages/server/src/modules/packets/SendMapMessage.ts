@@ -22,10 +22,9 @@ export default class SendMapMessage implements PacketBase {
       uid: user.playerId, // this.userId
       pseudo: user.username,
       text,
-      action
+      action,
     };
     camera.currMap?.onMessageMap(event, user.walker.sex);
     return true;
   }
-
 }

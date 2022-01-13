@@ -55,7 +55,6 @@ const RegisterPage: NextPage = () => {
     if (Object.entries(res.errors).length === 0) {
       Router.push("/play");
     }
-    console.log(res);
   }
 
   return (

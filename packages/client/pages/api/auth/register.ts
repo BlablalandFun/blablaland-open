@@ -44,7 +44,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     },
   });
   if (other) {
-    console.log(other);
     errors["username"] = "Ce pseudo est déjà pris";
   }
 

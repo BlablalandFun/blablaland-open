@@ -1,21 +1,20 @@
-import { Socket } from 'net';
-import GP from '../libs/GP.js';
-import { LimitedInteger } from '../libs/LimitedInteger.js';
-import { SocketMessage } from '../libs/network/Binary.js';
-import { MessageData } from '../libs/network/MessageData.js';
-import Camera from '../libs/users/Camera.js';
-import UserState from '../libs/users/UserState.js';
-import Walker from '../libs/users/Walker.js';
-import app from '../services/app.js';
-import loader from '../services/loader.js';
+import { Socket } from "net";
+import GP from "../libs/GP.js";
+import { LimitedInteger } from "../libs/LimitedInteger.js";
+import { SocketMessage } from "../libs/network/Binary.js";
+import { MessageData } from "../libs/network/MessageData.js";
+import Camera from "../libs/users/Camera.js";
+import UserState from "../libs/users/UserState.js";
+import Walker from "../libs/users/Walker.js";
+import app from "../services/app.js";
+import loader from "../services/loader.js";
 
 export default class GameUser {
+  static readonly LAST_PID: LimitedInteger = new LimitedInteger(0, 2 ** 24 - 1);
+  static readonly #MAX_CMPT = 65530;
 
-  static readonly LAST_PID: LimitedInteger = new LimitedInteger(0, (2 ** 24) - 1);
-  static readonly #MAX_CMPT = 65530
-
-  readonly #outCmpt: LimitedInteger = new LimitedInteger(12, GameUser.#MAX_CMPT)
-  readonly #inCmpt: LimitedInteger = new LimitedInteger(12, GameUser.#MAX_CMPT)
+  readonly #outCmpt: LimitedInteger = new LimitedInteger(12, GameUser.#MAX_CMPT);
+  readonly #inCmpt: LimitedInteger = new LimitedInteger(12, GameUser.#MAX_CMPT);
 
   lastPacketTime = 0;
 
@@ -26,35 +25,32 @@ export default class GameUser {
 
   state = UserState.PLAYING;
 
-  readonly walker = new Walker()
+  readonly walker = new Walker();
   readonly cameraList: Camera[] = [];
 
-  constructor(
-    private socket: Socket,
-    public serverId: number,
-  ) { }
+  constructor(private socket: Socket, public serverId: number) {}
 
   /**
    * Permet de vérifier si le joueur est dans une map
    * @param mapId - ID de la map
    * @param serverId - ID du serveur où se situe la map
-   * @returns 
+   * @returns
    */
   isInMap(mapId: number, serverId: number) {
-    return this.cameraList.some(cam => cam.isInMap(mapId, serverId));
+    return this.cameraList.some((cam) => cam.isInMap(mapId, serverId));
   }
 
   get username() {
-    return "admin_" + this.playerId
+    return "admin_" + this.playerId;
   }
 
   get server() {
-    return app.servers.find(server => server.serverId === this.serverId);
+    return app.servers.find((server) => server.serverId === this.serverId);
   }
 
   closeSocket = () => {
     this.socket.destroy();
-  }
+  };
 
   onDisconnect = async (_hadError: boolean) => {
     if (this.state === UserState.DISCONNECTING) {
@@ -62,28 +58,28 @@ export default class GameUser {
     }
 
     this.state = UserState.DISCONNECTING;
-    this.cameraList.forEach(camera => {
+    this.cameraList.forEach((camera) => {
       camera.methodeId = GP.BIT_METHODE_APPARITION;
       camera.removeMap();
     });
 
     const idx = app.users.indexOf(this);
     if (idx > -1) {
-      console.log('Suppression du user en mémoire')
+      console.log("Suppression du user en mémoire");
       app.users.splice(idx, 1);
     }
-  }
+  };
 
   onHandleData = async (data: Buffer) => {
-    this.#buffer.push(...data)
+    this.#buffer.push(...data);
     while (!this.#buffer.isFinished()) {
-      const message = this.#buffer.next()
+      const message = this.#buffer.next();
       if (message) {
         const currentCmpt = this.#inCmpt.increment();
 
-        const binary = new SocketMessage()
-        binary.readMessage(message)
-        const inCmpt = binary.bitReadUnsignedInt(16)
+        const binary = new SocketMessage();
+        binary.readMessage(message);
+        const inCmpt = binary.bitReadUnsignedInt(16);
 
         if (inCmpt >= currentCmpt && inCmpt <= currentCmpt + 20) {
           const type = binary.bitReadUnsignedInt(GP.BIT_TYPE);
@@ -97,19 +93,19 @@ export default class GameUser {
                 subType,
               });
             } else {
-              console.warn(`Packet[type=${type}, subType=${subType}] not found`)
+              console.warn(`Packet[type=${type}, subType=${subType}] not found`);
             }
           } catch (e) {
-            console.log(e)
+            console.log(e);
           }
 
-          console.log(`Packet[type=${type}, subType=${subType}]`)
+          console.log(`Packet[type=${type}, subType=${subType}]`);
 
           this.lastPacketTime = Date.now();
         }
       }
     }
-  }
+  };
 
   send(binary?: SocketMessage) {
     if (!binary) {

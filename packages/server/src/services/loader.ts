@@ -1,25 +1,23 @@
-import fs from 'node:fs/promises';
-import { PacketBase } from '../modules/PacketBase.js';
-import app from './app.js';
+import fs from "node:fs/promises";
+import { PacketBase } from "../modules/PacketBase.js";
+import app from "./app.js";
 
 class ModuleLoader {
-
   readonly #packets: PacketBase[] = [];
 
   async loadPackets() {
-
     const nextPackets = [];
-    const packetsDir = app.projectRoot + '/modules/packets/';
+    const packetsDir = app.projectRoot + "/modules/packets/";
 
     const files: string[] = [];
     try {
-      files.push(...await fs.readdir(packetsDir));
+      files.push(...(await fs.readdir(packetsDir)));
     } catch (e) {
       console.error(e);
     }
 
     for (const file of files) {
-      if (file.endsWith('.js') && !file.endsWith('.bak.js')) {
+      if (file.endsWith(".js") && !file.endsWith(".bak.js")) {
         try {
           const packetClass = await import(packetsDir + file);
           const packetClassInstance: PacketBase = new packetClass.default();
@@ -44,7 +42,7 @@ class ModuleLoader {
   }
 
   getPacketHandler(type: number, subType: number) {
-    return this.#packets.find(packet => packet.type === type && packet.subType === subType);
+    return this.#packets.find((packet) => packet.type === type && packet.subType === subType);
   }
 }
 
