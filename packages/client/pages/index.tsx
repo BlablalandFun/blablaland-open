@@ -1,14 +1,7 @@
 import type { NextPage } from "next";
-import Router from "next/router";
-import { useAuthContext } from "../components/AuthStore";
 import { Layout } from "../components/Layout";
 
 const Home: NextPage = () => {
-  const auth = useAuthContext();
-  if (auth?.data?.username) {
-    Router.push("/play");
-  }
-
   return (
     <Layout>
       <div className="p-5 flex-1">
