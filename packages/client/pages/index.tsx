@@ -18,7 +18,7 @@ const Home: NextPage = () => {
             .
           </p>
 
-          <p className="mt-10">Pour naviguer sur le site, vous pouvez utiliser les boutons à gauche.</p>
+          <p className="mt-10">Pour naviguer sur le site, vous pouvez utiliser les boutons situés en bas de la page.</p>
         </div>
       </div>
     </Layout>

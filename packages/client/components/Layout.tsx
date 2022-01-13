@@ -16,7 +16,12 @@ export function Layout(props: PropsWithChildren<LayoutProps>) {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-900 to-gray-900">
-      <div className="absolute left-4 flex flex-col gap-y-4">
+      <div className="mt-4">{/* <Image src={logo} alt="logo" /> */}</div>
+      <div className={props.className ?? "flex flex-col bg-white/10 backdrop-blur container rounded-xl my-4 max-w-md"}>
+        {props.children}
+        <Footer />
+      </div>
+      <div className="mt-8 inline-flex gap-x-4">
         <LeftButton title="Accueil" href="/">
           <HomeIcon className="h-7" />
         </LeftButton>
@@ -26,11 +31,6 @@ export function Layout(props: PropsWithChildren<LayoutProps>) {
         <LeftButton title="Mon compte" href={isLogged ? "/my-account" : "/login"}>
           <UserCircleIcon className="h-7" />
         </LeftButton>
-      </div>
-      <div className="mt-4">{/* <Image src={logo} alt="logo" /> */}</div>
-      <div className={props.className ?? "flex-1 flex flex-col bg-white/10 backdrop-blur container rounded-xl my-4 max-w-md"}>
-        {props.children}
-        <Footer />
       </div>
     </div>
   );
