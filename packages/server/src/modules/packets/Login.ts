@@ -31,6 +31,7 @@ export default class Login implements PacketBase {
 
       const dbUser = await prisma.user.findFirst({
         select: {
+          id: true,
           username: true,
           grade: true,
           xp: true,
@@ -43,11 +44,17 @@ export default class Login implements PacketBase {
         throw new Error("User not found");
       }
 
+      user.userId = dbUser.id;
+      user.login = dbUser.username;
+      user.pseudo = dbUser.username;
+      user.grade = dbUser.grade;
+      user.xp = dbUser.xp;
+
       const sm = new SocketMessage(2, 1);
-      sm.bitWriteUnsignedInt(GP.BIT_USER_ID, user.playerId); // userId
-      sm.bitWriteString(dbUser.username); // pseudo
-      sm.bitWriteUnsignedInt(GP.BIT_GRADE, dbUser.grade); // grade
-      sm.bitWriteUnsignedInt(32, dbUser.xp); // xp
+      sm.bitWriteUnsignedInt(GP.BIT_USER_ID, user.userId); // userId
+      sm.bitWriteString(user.pseudo); // pseudo
+      sm.bitWriteUnsignedInt(GP.BIT_GRADE, user.grade); // grade
+      sm.bitWriteUnsignedInt(32, user.xp); // xp
       user.send(sm);
     } catch (err) {
       console.error(err);

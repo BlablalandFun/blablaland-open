@@ -23,6 +23,12 @@ export default class GameUser {
   time = 0;
   playerId = 0;
 
+  userId = 0;
+  grade = 0;
+  xp = 0;
+  pseudo = "";
+  login = "";
+
   state = UserState.PLAYING;
 
   readonly walker = new Walker();
@@ -38,10 +44,6 @@ export default class GameUser {
    */
   isInMap(mapId: number, serverId: number) {
     return this.cameraList.some((cam) => cam.isInMap(mapId, serverId));
-  }
-
-  get username() {
-    return "admin_" + this.playerId;
   }
 
   get server() {
