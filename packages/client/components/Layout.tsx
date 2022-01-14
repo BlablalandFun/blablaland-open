@@ -1,4 +1,4 @@
-import { CubeIcon, HomeIcon, PlayIcon, SunIcon, UserAddIcon, UserCircleIcon, UserIcon } from "@heroicons/react/solid";
+import { CubeIcon, HomeIcon, SunIcon, UserCircleIcon } from "@heroicons/react/solid";
 import Image from "next/image";
 import React, { PropsWithChildren } from "react";
 import logo from "../assets/logo_blablaland.png";
@@ -8,7 +8,7 @@ import { MenuButton } from "./MenuButton";
 
 type LayoutProps = {
   className?: string;
-}
+};
 
 export function Layout(props: PropsWithChildren<LayoutProps>) {
   const auth = useAuthContext();
@@ -16,7 +16,9 @@ export function Layout(props: PropsWithChildren<LayoutProps>) {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-200 to-gray-200 dark:from-blue-900 dark:to-gray-900">
-      <div className="mt-4">{/* <Image src={logo} alt="logo" /> */}</div>
+      <div className="my-8">
+        <Image src={logo} alt="logo" />{" "}
+      </div>
       <div className={props.className ?? "flex flex-col bg-blue-500/10 dark:bg-white/10 backdrop-blur container rounded-xl my-4 max-w-md"}>
         {props.children}
         <Footer />
