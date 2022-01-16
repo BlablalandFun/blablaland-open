@@ -5,4 +5,4 @@ export type PhysicEvent = {
   eventType: number;
   lastSpeedX: number;
   lastSpeedY: number;
-}
+};

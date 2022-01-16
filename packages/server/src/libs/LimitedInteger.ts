@@ -1,11 +1,7 @@
 export class LimitedInteger {
-
   readonly #initialValue: number;
 
-  constructor (
-    private _value: number,
-    private readonly max: number,
-  ) {
+  constructor(private _value: number, private readonly max: number) {
     this.#initialValue = _value;
   }
 

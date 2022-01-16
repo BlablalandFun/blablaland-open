@@ -2,7 +2,7 @@ export type ServerDefinition = {
   id: number;
   port: number;
   nom: string;
-}
+};
 
 export type MapDefinition = {
   id: number;
@@ -15,7 +15,7 @@ export type MapDefinition = {
   peace: number;
   regionId: number;
   planetId: number;
-}
+};
 
 export type ObjectDefinition = {
   id: number;
@@ -23,14 +23,13 @@ export type ObjectDefinition = {
   visibility: number;
   genre: number;
   expireAt: number;
-}
+};
 
 export type PacketDefinition = {
   type: number;
   subType: number;
   binary: SocketMessage;
-}
-
+};
 
 export type InterfaceEvent = {
   action?: number;
@@ -39,4 +38,56 @@ export type InterfaceEvent = {
   pseudo: string;
   serverId?: number;
   text: string;
-}
+};
+
+export type FxObject = {
+  objectId: number;
+  fxFileId: number;
+  binData: Binary;
+  fxSid?: number;
+};
+
+export type FxMngOptions = {
+  objectId?: number | undefined;
+  fxFileId?: number | undefined;
+  binData: Binary;
+  fxSid: number;
+  fxId: number;
+};
+
+export type FxChangeOptions = {
+  binData?: Binary;
+  fxId: number;
+  fxSid: number;
+  active: boolean;
+  endCause: number;
+};
+
+export type MapFxChange = {
+  fxId: number;
+  fxSid: number;
+  active: boolean;
+  endCause: number;
+  param?: Binary;
+};
+
+export type NewMapFxChangeOptions = {
+  fxId: number;
+  fxSid: number;
+  binData?: Binary;
+};
+
+export type FxDataOptions = {
+  objectId: number;
+  fxFileId: number;
+  param?: Binary;
+};
+
+export type FxConsumer = {
+  fxManager?: FxManager;
+  binary: SocketMessage;
+};
+
+export type FxOptions = {
+  expireAt?: number;
+};

@@ -26,13 +26,13 @@ export default class MoveWalker implements PacketBase {
         newColor: packet.bitReadUnsignedInt(24),
         eventType: packet.bitReadUnsignedInt(8),
         lastSpeedX: packet.bitReadSignedInt(18),
-        lastSpeedY: packet.bitReadSignedInt(18)
-      }
+        lastSpeedY: packet.bitReadSignedInt(18),
+      };
     }
 
     user.send(new SocketMessage(1, 11));
 
-    const camera = user.cameraList[0]
+    const camera = user.cameraList[0];
     if (!camera) {
       return false;
     }
@@ -44,5 +44,4 @@ export default class MoveWalker implements PacketBase {
     camera.currMap?.updatePlayerData(user, physicEvent);
     return true;
   }
-
 }

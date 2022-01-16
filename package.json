@@ -55,6 +55,10 @@
   },
   "scripts": {
     "dev": "turbo run dev",
-    "start": "turbo run start"
+    "start": "turbo run start",
+    "prettify": "prettier --write \"./**/*.ts\""
+  },
+  "dependencies": {
+    "prettier": "^2.5.1"
   }
 }

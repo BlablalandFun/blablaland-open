@@ -1,7 +1,7 @@
 /**
  * Données statiques du serveur
  */
- const enum GP {
+const enum GP {
   BIT_TYPE = 5,
   BIT_STYPE = 5,
   BIT_MAP_ID = 12,
@@ -35,7 +35,7 @@
   BIT_METHODE_ELECTROCUTE = 9,
   BIT_METHODE_RESSUSCITE = 11,
   BIT_METHODE_MARIO = 12,
-  BIT_METHODE_CHARIOT = 13
+  BIT_METHODE_CHARIOT = 13,
 }
 
-export default GP
+export default GP;

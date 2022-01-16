@@ -1,0 +1,16 @@
+{
+  "name": "@blablaland/db",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "typings": "index.d.ts",
+  "dependencies": {
+    "@prisma/client": "^3.8.0"
+  },
+  "exports": {
+    "default": "./index.js"
+  },
+  "devDependencies": {
+    "prisma": "^3.8.0"
+  }
+}
