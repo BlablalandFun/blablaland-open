@@ -94,14 +94,13 @@ export default class GameUser {
                 binary,
                 subType,
               });
+              console.log(`Packet[type=${type}, subType=${subType}]`);
             } else {
               console.warn(`Packet[type=${type}, subType=${subType}] not found`);
             }
           } catch (e) {
             console.log(e);
           }
-
-          console.log(`Packet[type=${type}, subType=${subType}]`);
 
           this.lastPacketTime = Date.now();
         }
