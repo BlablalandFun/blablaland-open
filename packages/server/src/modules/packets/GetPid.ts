@@ -4,10 +4,10 @@ import { PacketParams } from "../../types/network.js";
 import { PacketBase } from "../PacketBase.js";
 
 export default class GetPid implements PacketBase {
-  type: number = 1;
-  subType: number = 3;
+  type = 1;
+  subType = 3;
 
-  async handle(user: GameUser, params: PacketParams): Promise<boolean> {
+  async handle(user: GameUser, _params: PacketParams): Promise<boolean> {
     if (user.playerId === 0) {
       user.playerId = GameUser.LAST_PID.increment();
 
@@ -17,7 +17,6 @@ export default class GetPid implements PacketBase {
 
       return true;
     }
-    return false
+    return false;
   }
-
 }

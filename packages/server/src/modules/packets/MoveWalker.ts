@@ -6,7 +6,7 @@ import { PhysicEvent } from "../../types/user.js";
 import { PacketBase } from "../PacketBase.js";
 
 export default class MoveWalker implements PacketBase {
-  type: number = 2;
+  type = 2;
   subType: number[] = [1, 2];
 
   async handle(user: GameUser, params: PacketParams): Promise<boolean> {
@@ -26,19 +26,22 @@ export default class MoveWalker implements PacketBase {
         newColor: packet.bitReadUnsignedInt(24),
         eventType: packet.bitReadUnsignedInt(8),
         lastSpeedX: packet.bitReadSignedInt(18),
-        lastSpeedY: packet.bitReadSignedInt(18)
-      }
+        lastSpeedY: packet.bitReadSignedInt(18),
+      };
     }
 
     user.send(new SocketMessage(1, 11));
 
-    const camera = user.cameraList[0]
+    const camera = user.cameraList[0];
     if (!camera) {
+      return false;
+    }
+
+    if (camera.currMap?.id !== mapId) {
       return false;
     }
 
     camera.currMap?.updatePlayerData(user, physicEvent);
     return true;
   }
-
 }

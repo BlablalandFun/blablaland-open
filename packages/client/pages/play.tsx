@@ -1,54 +1,51 @@
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
+import nookies, { destroyCookie } from "nookies";
+import { Layout } from "../components/Layout";
+import { SwfContainer } from "../components/SwfContainer";
+import { checkJwtAuth } from "../src/helpers";
 
-import Image from "next/image";
-import logo from "../assets/logo_blablaland.png";
+type PlayProps = {
+  SESSION: string;
+};
 
-function toFlashVars(value: object) {
-  const entries = Object.entries(value).map(([key, value]) => [key, value]);
-  const result = {};
-  for (const [key, value] of entries) {
-    result[key] = value;
-  }
-  return result;
-}
-
-const Home: NextPage = () => {
-  const FLASH_VARS: object = {
-    SESSION: "TEST_SESSION",
-    DAILYMSG: "Message du jour",
+const PlayPage: NextPage<PlayProps> = (props: PlayProps) => {
+  const FLASH_VARS = {
+    SESSION: props.SESSION,
+    DAILYMSG: "Projet open-source",
     DAILYMSGSECU: "Message de sécurité",
     CACHE_VERSION: 1,
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-900 to-gray-900">
-      <div className="mt-4">
-        <Image src={logo} alt="logo" />
+    <Layout className="flex flex-col bg-white/10 backdrop-blur rounded-xl">
+      <div className="p-5 inline-flex items-center">
+        <h1 className="flex-1 font-medium text-2xl text-slate-100">Serveur de développement</h1>
       </div>
-      <div className="flex-1 flex flex-col bg-white/10 backdrop-blur container rounded-xl my-4">
-        <div className="p-5">
-          <h1 className="font-medium text-2xl text-slate-100">Serveur de développement</h1>
-          <p className="pt-2 text-slate-300 text-sm">
-            Il est <u>déconseillé</u> de l'utiliser en production !
-          </p>
-        </div>
-        <div className="self-center">
-          <embed
-            // @ts-expect-error
-            flashvars={new URLSearchParams(toFlashVars(FLASH_VARS)).toString()}
-            height="560"
-            quality="high"
-            src="/chat/chat.swf"
-            type="application/x-shockwave-flash"
-            width="950"
-          />
-        </div>
-        <div className="px-3 py-2 border-white/50 inline-flex items-center justify-end">
-          <span className="text-xs text-slate-400 text-right">Développé par l'équipe de Blablaland.fun</span>
-        </div>
-      </div>
-    </div>
+      <SwfContainer src="/chat/chat.swf" className="self-center max-w-[950px] max-h-[560px]" flashVars={FLASH_VARS} height={560} width={950} />
+    </Layout>
   );
 };
 
-export default Home;
+export default PlayPage;
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { SESSION } = nookies.get(ctx);
+  if (!SESSION) {
+    try {
+      await checkJwtAuth(SESSION);
+    } catch (err) {
+      destroyCookie(ctx, "SESSION");
+      return {
+        props: {},
+        redirect: {
+          destination: "/login",
+        },
+      };
+    }
+  }
+  return {
+    props: {
+      SESSION,
+    },
+  };
+};

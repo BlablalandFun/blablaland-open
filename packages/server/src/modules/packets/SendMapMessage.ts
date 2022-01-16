@@ -4,8 +4,8 @@ import { InterfaceEvent } from "../../types/server.js";
 import { PacketBase } from "../PacketBase.js";
 
 export default class SendMapMessage implements PacketBase {
-  type: number = 1;
-  subType: number = 4;
+  type = 1;
+  subType = 4;
 
   async handle(user: GameUser, params: PacketParams): Promise<boolean> {
     const packet = params.binary;
@@ -20,12 +20,11 @@ export default class SendMapMessage implements PacketBase {
       serverId: user.serverId,
       pid: user.playerId,
       uid: user.playerId, // this.userId
-      pseudo: user.username,
+      pseudo: user.pseudo,
       text,
-      action
+      action,
     };
     camera.currMap?.onMessageMap(event, user.walker.sex);
     return true;
   }
-
 }

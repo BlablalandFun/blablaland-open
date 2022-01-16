@@ -8,13 +8,23 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.5",
+    "bcryptjs": "^2.4.3",
+    "classnames": "^2.2.6",
+    "jose": "^4.3.7",
+    "nanoid": "^3.1.30",
     "next": "12.0.7",
+    "nookies": "^2.5.2",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "swr": "^1.1.2"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/classnames": "^2.3.1",
     "@types/node": "16.11.11",
     "@types/react": "17.0.37",
+    "@types/tailwindcss": "^3.0.2",
     "autoprefixer": "^10.4.0",
     "eslint": "8.4.0",
     "eslint-config-next": "12.0.7",

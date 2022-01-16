@@ -4,8 +4,8 @@ import { PacketParams } from "../../types/network.js";
 import { PacketBase } from "../PacketBase.js";
 
 export default class GetTime implements PacketBase {
-  type: number = 1;
-  subType: number = 1;
+  type = 1;
+  subType = 1;
 
   async handle(user: GameUser, params: PacketParams): Promise<boolean> {
     const packet = params.binary;
@@ -20,5 +20,4 @@ export default class GetTime implements PacketBase {
     user.send(sm);
     return true;
   }
-
 }
