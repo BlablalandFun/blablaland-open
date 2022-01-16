@@ -17,7 +17,7 @@ const PlayPage: NextPage<PlayProps> = (props: PlayProps) => {
   };
 
   return (
-    <Layout className="flex flex-col bg-white/10 backdrop-blur rounded-xl my-4">
+    <Layout className="flex flex-col bg-white/10 backdrop-blur rounded-xl">
       <div className="p-5 inline-flex items-center">
         <h1 className="flex-1 font-medium text-2xl text-slate-100">Serveur de développement</h1>
       </div>

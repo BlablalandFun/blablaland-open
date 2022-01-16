@@ -16,14 +16,14 @@ export function Layout(props: PropsWithChildren<LayoutProps>) {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-200 to-gray-200 dark:from-blue-900 dark:to-gray-900">
-      <div className="my-8">
+      <div className="my-6">
         <Image src={logo} alt="logo" />{" "}
       </div>
       <div className={props.className ?? "flex flex-col bg-blue-500/10 dark:bg-white/10 backdrop-blur container rounded-xl my-4 max-w-md"}>
         {props.children}
         <Footer />
       </div>
-      <div className="mt-8 inline-flex gap-x-4">
+      <div className="my-8 inline-flex gap-x-4">
         <MenuButton title="Accueil" href="/">
           <HomeIcon className="h-7" />
         </MenuButton>
