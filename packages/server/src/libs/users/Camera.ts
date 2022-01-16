@@ -85,7 +85,7 @@ export default class Camera {
       sm.bitWriteBoolean(true);
       sm.bitWriteUnsignedInt(GP.BIT_USER_ID, u.playerId);
       sm.bitWriteUnsignedInt(GP.BIT_USER_PID, u.playerId);
-      sm.bitWriteString(u.username);
+      sm.bitWriteString(u.pseudo);
       sm.bitWriteUnsignedInt(3, 0);
       sm.bitWriteUnsignedInt(32, u.time);
 

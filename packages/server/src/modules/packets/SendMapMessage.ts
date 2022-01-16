@@ -20,7 +20,7 @@ export default class SendMapMessage implements PacketBase {
       serverId: user.serverId,
       pid: user.playerId,
       uid: user.playerId, // this.userId
-      pseudo: user.username,
+      pseudo: user.pseudo,
       text,
       action,
     };
