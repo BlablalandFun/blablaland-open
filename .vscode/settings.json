@@ -1,3 +1,18 @@
 {
-  "editor.tabSize": 2
+  "css.validate": false,
+  "editor.tabSize": 2,
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "tailwindCSS.validate": true,
+  "tailwindCSS.emmetCompletions": true,
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "html"
+  },
+  "tailwindCSS.colorDecorators": true,
+  "tailwindCSS.lint.recommendedVariantOrder": "warning",
+
+  "javascript.preferences.importModuleSpecifierEnding": "js",
+  "typescript.preferences.importModuleSpecifierEnding": "js"
 }
