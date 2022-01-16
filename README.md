@@ -32,6 +32,11 @@ Installer les dépendences NPM
   npm install
 ```
 
+Initialiser le projet (base de données, etc.)
+```bash
+  npm run init
+```
+
 Démarrer le projet
 ```bash
   npm run start
