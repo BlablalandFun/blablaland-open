@@ -30,6 +30,11 @@
   "turbo": {
     "baseBranch": "origin/main",
     "pipeline": {
+      "init": {
+        "dependsOn": [
+          "^init"
+        ]
+      },
       "build": {
         "dependsOn": [
           "^build"
@@ -54,6 +59,7 @@
     }
   },
   "scripts": {
+    "init": "turbo run init",
     "dev": "turbo run dev",
     "start": "turbo run start",
     "prettify": "prettier --write \"./**/*.ts\""

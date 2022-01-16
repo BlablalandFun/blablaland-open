@@ -12,5 +12,8 @@
   },
   "devDependencies": {
     "prisma": "^3.8.0"
+  },
+  "scripts": {
+    "init": "prisma generate && prisma db push"
   }
 }
