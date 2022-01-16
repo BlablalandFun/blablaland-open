@@ -1,5 +1,6 @@
 import { createServer, Server, Socket } from "net";
 import { ConfigServer } from "../config/server.js";
+import { LimitedInteger } from "../libs/LimitedInteger.js";
 import app from "../services/app.js";
 import { MapDefinition, ServerDefinition } from "../types/server.js";
 import GameMap from "./GameMap.js";
@@ -7,6 +8,7 @@ import GameUser from "./GameUser.js";
 
 export default class GameServer {
   readonly #server: Server;
+  readonly lastFxSid = new LimitedInteger(0, 2 ** 16 - 1);
   static #DEFAULT_SERVER_ID = 12301;
 
   users: GameUser[] = [];

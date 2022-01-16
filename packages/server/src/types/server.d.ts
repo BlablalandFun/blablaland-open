@@ -39,3 +39,55 @@ export type InterfaceEvent = {
   serverId?: number;
   text: string;
 };
+
+export type FxObject = {
+  objectId: number;
+  fxFileId: number;
+  binData: Binary;
+  fxSid?: number;
+};
+
+export type FxMngOptions = {
+  objectId?: number | undefined;
+  fxFileId?: number | undefined;
+  binData: Binary;
+  fxSid: number;
+  fxId: number;
+};
+
+export type FxChangeOptions = {
+  binData?: Binary;
+  fxId: number;
+  fxSid: number;
+  active: boolean;
+  endCause: number;
+};
+
+export type MapFxChange = {
+  fxId: number;
+  fxSid: number;
+  active: boolean;
+  endCause: number;
+  param?: Binary;
+};
+
+export type NewMapFxChangeOptions = {
+  fxId: number;
+  fxSid: number;
+  binData?: Binary;
+};
+
+export type FxDataOptions = {
+  objectId: number;
+  fxFileId: number;
+  param?: Binary;
+};
+
+export type FxConsumer = {
+  fxManager?: FxManager;
+  binary: SocketMessage;
+};
+
+export type FxOptions = {
+  expireAt?: number;
+};
