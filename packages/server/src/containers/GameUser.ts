@@ -50,6 +50,11 @@ export default class GameUser {
     return app.servers.find((server) => server.serverId === this.serverId);
   }
 
+  get mainCamera() {
+    const camera = this.cameraList[0];
+    return camera?.id === 0 ? camera : undefined;
+  }
+
   closeSocket = () => {
     this.socket.destroy();
   };

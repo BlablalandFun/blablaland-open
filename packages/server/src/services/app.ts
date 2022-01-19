@@ -24,6 +24,7 @@ export class Application {
     await this.initServers();
 
     loader.loadPackets();
+    loader.loadObjects();
 
     cron.schedule("*/5 * * * *", () => this.showMetrics());
     // cron.schedule('* * * * * *', () => this.purgeInactive())
