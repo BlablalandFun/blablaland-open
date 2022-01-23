@@ -40,6 +40,12 @@ export type InterfaceEvent = {
   text: string;
 };
 
+export type OwnedObject = ObjectDefinition & {
+  objectId: number;
+  quantity: number;
+  binData: Binary;
+};
+
 export type FxObject = {
   objectId: number;
   fxFileId: number;

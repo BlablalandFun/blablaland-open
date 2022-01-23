@@ -1,13 +1,14 @@
 import { Socket } from "net";
 import GP from "../libs/GP.js";
 import { LimitedInteger } from "../libs/LimitedInteger.js";
-import { SocketMessage } from "../libs/network/Binary.js";
+import Binary, { SocketMessage } from "../libs/network/Binary.js";
 import { MessageData } from "../libs/network/MessageData.js";
 import Camera from "../libs/users/Camera.js";
 import UserState from "../libs/users/UserState.js";
 import Walker from "../libs/users/Walker.js";
 import app from "../services/app.js";
 import loader from "../services/loader.js";
+import { OwnedObject } from "../types/server.js";
 
 export default class GameUser {
   static readonly LAST_PID: LimitedInteger = new LimitedInteger(0, 2 ** 24 - 1);
@@ -34,7 +35,19 @@ export default class GameUser {
   readonly walker = new Walker();
   readonly cameraList: Camera[] = [];
 
-  constructor(private socket: Socket, public serverId: number) {}
+  readonly objectList: OwnedObject[] = [];
+
+  constructor(private socket: Socket, public serverId: number) {
+    app.objects.forEach((value) => {
+      this.objectList.push({
+        ...value,
+        objectId: value.id,
+        binData: new Binary(),
+        id: value.id + 1000,
+        quantity: 2 ** 32 - 1,
+      });
+    });
+  }
 
   /**
    * Permet de vérifier si le joueur est dans une map
