@@ -9,6 +9,9 @@ import { PhysicEvent } from "../types/user.js";
 import GameUser from "./GameUser.js";
 
 export default class GameMap {
+
+  readonly fxMemory: FxManager[] = [];
+
   constructor(readonly id: number, readonly serverId: number, readonly definition: MapDefinition) {}
 
   get users() {

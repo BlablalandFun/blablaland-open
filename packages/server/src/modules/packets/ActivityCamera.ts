@@ -19,7 +19,7 @@ export default class MoveCamera implements PacketBase {
       return false;
     }
 
-    const secureMap = camera.currMap ?? camera.nextMap;
+    const secureMap = camera.secureMap;
     if (!secureMap) {
       return false;
     }

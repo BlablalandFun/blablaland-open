@@ -18,6 +18,10 @@ export class Application {
 
   #projectRoot?: string;
 
+  getTime() {
+    return Math.trunc(Date.now() / 1000);
+  }
+
   async init(rootDir: string) {
     this.#projectRoot = rootDir;
 

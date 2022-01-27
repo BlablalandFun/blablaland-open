@@ -3,12 +3,14 @@ import GP from "../libs/GP.js";
 import { LimitedInteger } from "../libs/LimitedInteger.js";
 import Binary, { SocketMessage } from "../libs/network/Binary.js";
 import { MessageData } from "../libs/network/MessageData.js";
+import FxManager from "../libs/servers/FxManager.js";
 import Camera from "../libs/users/Camera.js";
 import UserState from "../libs/users/UserState.js";
 import Walker from "../libs/users/Walker.js";
 import app from "../services/app.js";
 import loader from "../services/loader.js";
-import { OwnedObject } from "../types/server.js";
+import { FxObject, FxOptions, OwnedObject } from "../types/server.js";
+import GameMap from "./GameMap.js";
 
 export default class GameUser {
   static readonly LAST_PID: LimitedInteger = new LimitedInteger(0, 2 ** 24 - 1);
@@ -37,16 +39,22 @@ export default class GameUser {
 
   readonly objectList: OwnedObject[] = [];
 
+  readonly fxMemory: FxManager[] = [];
+
   constructor(private socket: Socket, public serverId: number) {
-    app.objects.forEach((value) => {
-      this.objectList.push({
-        ...value,
-        objectId: value.id,
-        binData: new Binary(),
-        id: value.id + 1000,
-        quantity: 2 ** 32 - 1,
+    app.objects
+      .filter((value) => loader.getObjectHandle(value.id) !== undefined)
+      .forEach((value) => {
+        const objectData: OwnedObject = {
+          ...value,
+          objectId: value.id,
+          binData: new Binary(),
+          id: value.id + 1000,
+          quantity: 2 ** 32 - 1,
+        };
+
+        this.objectList.push(objectData);
       });
-    });
   }
 
   /**
@@ -125,6 +133,40 @@ export default class GameUser {
       }
     }
   };
+
+  createUserFx(obj: FxObject, options: FxOptions = {}) {
+    const camera = this.mainCamera;
+    if (!camera) {
+      return [null, null];
+    }
+
+    const secureMap = camera.secureMap;
+    if (!secureMap) {
+      return [null, null];
+    }
+
+    const server = this.server;
+    if (!server) {
+      return [null, null];
+    }
+
+    const fxSid = obj.fxSid ?? server.lastFxSid.value;
+
+    const [fxManager, binary] = secureMap.createMapFxChange({
+      fxSid,
+      fxId: 5,
+      binData: GameMap.writeFxData({
+        objectId: obj.objectId,
+        fxFileId: obj.fxFileId,
+        param: obj.binData,
+      }),
+    });
+    if (fxManager) {
+      fxManager.options = options;
+    }
+
+    return [fxManager, binary];
+  }
 
   send(binary?: SocketMessage) {
     if (!binary) {

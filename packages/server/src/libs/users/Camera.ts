@@ -28,6 +28,14 @@ export default class Camera {
     return false;
   }
 
+  get ready() {
+    return this.currMap !== undefined;
+  }
+
+  get secureMap() {
+    return this.currMap ?? this.nextMap;
+  }
+
   removeMap() {
     this.prevMap?.onLostUser(this);
     this.currMap?.onLostUser(this);

@@ -1,6 +1,6 @@
 import GameUser from "../../containers/GameUser.js";
-import GP from "../../libs/GP.js";
 import Binary from "../../libs/network/Binary.js";
+import loader from "../../services/loader.js";
 import { PacketParams } from "../../types/network.js";
 import { PacketBase } from "../PacketBase.js";
 
@@ -11,20 +11,37 @@ export default class UseObject implements PacketBase {
   async handle(user: GameUser, params: PacketParams): Promise<boolean> {
     const packet = params.binary;
 
-    const _objId = packet.bitReadUnsignedInt(32);
+    const objId = packet.bitReadUnsignedInt(32);
     const hasData = packet.bitReadBoolean();
-    const _binData = hasData ? packet.bitReadBinaryData() : new Binary();
+    const objectData = hasData ? packet.bitReadBinaryData() : new Binary();
 
     const camera = user.mainCamera;
     if (!camera) {
       return false;
     }
 
-    // const map = user.server?.getMapBy((m) => m.id === mapId);
-    // if (map) {
-    //   camera.onMapReady(map, 0);
-    //   return true;
-    // }
-    return false;
+    if (!camera.ready) {
+      return false;
+    }
+
+    const definition = user.objectList.find((value) => value.id === objId);
+    if (!definition) {
+      console.warn("Object not found");
+      return false;
+    }
+
+    const handler = loader.getObjectHandle(definition.objectId);
+    if (!handler) {
+      console.warn("Object not handler");
+      return false;
+    }
+
+    return true;
+    // return handler.handle({
+    //   definition,
+    //   packet,
+    //   objectData,
+    //   user,
+    // });
   }
 }

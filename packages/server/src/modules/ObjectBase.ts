@@ -1,5 +1,4 @@
-import GameUser from "../containers/GameUser";
-import { PacketParams } from "../types/network";
+import { ObjectHandlerOptions } from "../types/user.js";
 
 export interface ObjectBase {
   objectId: number | number[];
@@ -7,5 +6,5 @@ export interface ObjectBase {
   /**
    * Permet de s'occuper des packets reçus
    */
-  handle(user: GameUser, params: PacketParams): Promise<boolean>;
+  handle(options: ObjectHandlerOptions): Promise<boolean>;
 }
