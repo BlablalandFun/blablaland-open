@@ -76,6 +76,10 @@ export default class GameMap {
     this.sendAll(binary);
   }
 
+  removeMapFxChange(fxId: number, fxSid: number, endCause = 0) {
+    return this.writeMapFxChange({ fxId, fxSid, endCause, active: false });
+  }
+
   createMapFxChange({ fxId, fxSid, binData }: NewMapFxChangeOptions) {
     return this.writeMapFxChange({
       fxId,
@@ -84,6 +88,10 @@ export default class GameMap {
       active: true,
       endCause: 0,
     });
+  }
+
+  removeUserFxChange(user: GameUser, fxId: number, fxSid: number, endCause = 0) {
+    return this.writeUserFxChange(user, { fxId, fxSid, endCause, active: false });
   }
 
   createUserFxChange(user: GameUser, { fxId, fxSid, binData }: NewMapFxChangeOptions) {
