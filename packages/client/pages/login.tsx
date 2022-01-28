@@ -1,5 +1,6 @@
 import cx from "classnames";
 import type { GetServerSideProps, NextPage } from "next";
+import Link from "next/link";
 import Router from "next/router";
 import nookies, { destroyCookie } from "nookies";
 import { FormEvent, useState } from "react";
@@ -36,6 +37,8 @@ const RegisterPage: NextPage = () => {
   const [errors, setErrors] = useState<RegistrationErrors>({});
 
   async function onSubmit(evt: FormEvent<HTMLFormElement>) {
+    console.log("Send login request");
+
     evt.preventDefault();
 
     const formData = new FormData(evt.currentTarget);
@@ -92,10 +95,12 @@ const RegisterPage: NextPage = () => {
           {errors.password && <small className="text-red-500 mt-1.5">{errors.password}</small>}
         </div>
         <div className="flex gap-x-4">
-          <button className="flex-1 self-start px-6 py-2 rounded-full font-medium text-white bg-sky-600 hover:bg-sky-700">Se connecter</button>
-          <a href="/register" className="self-end px-6 py-2 rounded-full font-medium text-white bg-teal-600 hover:bg-teal-700">
-            Pas inscrit ?
-          </a>
+          <button type="submit" className="flex-1 self-start px-6 py-2 rounded-full font-medium text-white bg-sky-600 hover:bg-sky-700">
+            Se connecter
+          </button>
+          <Link href="/register">
+            <a className="self-end px-6 py-2 rounded-full font-medium text-white bg-teal-600 hover:bg-teal-700">Pas inscrit ?</a>
+          </Link>
         </div>
       </form>
     </Layout>
