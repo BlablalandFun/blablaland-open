@@ -9,7 +9,6 @@ import { PhysicEvent } from "../types/user.js";
 import GameUser from "./GameUser.js";
 
 export default class GameMap {
-
   readonly fxMemory: FxManager[] = [];
 
   constructor(readonly id: number, readonly serverId: number, readonly definition: MapDefinition) {}
@@ -87,6 +86,16 @@ export default class GameMap {
     });
   }
 
+  createUserFxChange(user: GameUser, { fxId, fxSid, binData }: NewMapFxChangeOptions) {
+    return this.writeUserFxChange(user, {
+      fxId,
+      fxSid,
+      binData,
+      active: true,
+      endCause: 0,
+    });
+  }
+
   writeFxChange(binary: Binary, { active, endCause, fxId, fxSid, binData }: FxChangeOptions) {
     binary.bitWriteBoolean(active);
     if (active) {
@@ -95,17 +104,42 @@ export default class GameMap {
       binary.bitWriteUnsignedInt(2, endCause);
     }
     binary.bitWriteUnsignedInt(GP.BIT_FX_ID, fxId);
-    binary.bitWriteUnsignedInt(GP.BIT_FX_SID, fxSid);
+    binary.bitWriteUnsignedInt(GP.BIT_FX_SID, fxSid as number);
     binary.bitWriteBinaryData(binData);
   }
 
   writeMapFxChange(options: FxChangeOptions): [FxManager | undefined, SocketMessage] {
+    options.fxSid ??= this.server?.lastFxSid.increment();
     const binary = this.#getHeader(10);
     this.writeFxChange(binary, options);
 
     if (options.active) {
       const fxManager = new FxManager({
-        fxSid: options.fxSid,
+        fxSid: options.fxSid as number,
+        fxId: options.fxId,
+        binData: options.binData ?? new Binary(),
+      });
+      return [fxManager, binary];
+    }
+
+    return [undefined, binary];
+  }
+
+  writeUserFxChange(user: GameUser, options: FxChangeOptions): [FxManager | undefined, SocketMessage] {
+    options.fxSid ??= this.server?.lastFxSid.increment();
+
+    const binary = this.#getHeader(6);
+    binary.bitWriteUnsignedInt(GP.BIT_USER_PID, user.playerId);
+    if (user.mainCamera) {
+      binary.bitWriteBoolean(user.mainCamera.ready);
+    } else {
+      binary.bitWriteBoolean(false);
+    }
+    this.writeFxChange(binary, options);
+
+    if (options.active) {
+      const fxManager = new FxManager({
+        fxSid: options.fxSid as number,
         fxId: options.fxId,
         binData: options.binData ?? new Binary(),
       });

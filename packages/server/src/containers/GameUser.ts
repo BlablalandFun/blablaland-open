@@ -134,25 +134,20 @@ export default class GameUser {
     }
   };
 
-  createUserFx(obj: FxObject, options: FxOptions = {}) {
-    const camera = this.mainCamera;
-    if (!camera) {
-      return [null, null];
-    }
-
-    const secureMap = camera.secureMap;
+  createUserFx(obj: FxObject, options: FxOptions = {}): [FxManager | undefined, SocketMessage] {
+    const secureMap = this.mainCamera?.secureMap;
     if (!secureMap) {
-      return [null, null];
+      throw new Error("Not ready");
     }
 
     const server = this.server;
     if (!server) {
-      return [null, null];
+      throw new Error("Unknown server")
     }
 
     const fxSid = obj.fxSid ?? server.lastFxSid.value;
 
-    const [fxManager, binary] = secureMap.createMapFxChange({
+    const [fxManager, binary] = secureMap.createUserFxChange(this, {
       fxSid,
       fxId: 5,
       binData: GameMap.writeFxData({

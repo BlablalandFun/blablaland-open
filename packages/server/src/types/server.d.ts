@@ -64,7 +64,7 @@ export type FxMngOptions = {
 export type FxChangeOptions = {
   binData?: Binary;
   fxId: number;
-  fxSid: number;
+  fxSid?: number;
   active: boolean;
   endCause: number;
 };

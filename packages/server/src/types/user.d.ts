@@ -1,3 +1,4 @@
+import GameMap from "../containers/GameMap.js";
 import GameUser from "../containers/GameUser.js";
 import Binary from "../libs/network/Binary.js";
 import { OwnedObject } from "./server.js";
