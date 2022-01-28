@@ -142,7 +142,7 @@ export default class GameUser {
 
     const server = this.server;
     if (!server) {
-      throw new Error("Unknown server")
+      throw new Error("Unknown server");
     }
 
     const fxSid = obj.fxSid ?? server.lastFxSid.value;
@@ -161,6 +161,23 @@ export default class GameUser {
     }
 
     return [fxManager, binary];
+  }
+
+  sendRemoveUserFx(fxManager: FxManager, endCause = 0) {
+    const camera = this.mainCamera;
+    if (!camera) {
+      return;
+    }
+    const secureMap = camera.secureMap;
+    if (!secureMap) {
+      return;
+    }
+    const [, sm] = secureMap.removeUserFxChange(this, fxManager.fxId, fxManager.fxSid, endCause);
+    if (camera.ready) {
+      secureMap.sendAll(sm);
+    } else {
+      this.send(sm);
+    }
   }
 
   send(binary?: SocketMessage) {
