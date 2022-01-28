@@ -149,7 +149,7 @@ export default class GameUser {
 
     const [fxManager, binary] = secureMap.createUserFxChange(this, {
       fxSid,
-      fxId: 5,
+      fxId: 6,
       binData: GameMap.writeFxData({
         objectId: obj.objectId,
         fxFileId: obj.fxFileId,
