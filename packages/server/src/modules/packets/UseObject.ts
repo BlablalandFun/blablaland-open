@@ -1,3 +1,4 @@
+import GameMap from "../../containers/GameMap.js";
 import GameUser from "../../containers/GameUser.js";
 import Binary from "../../libs/network/Binary.js";
 import loader from "../../services/loader.js";
@@ -24,6 +25,8 @@ export default class UseObject implements PacketBase {
       return false;
     }
 
+    const currentMap = camera.currMap as GameMap;
+
     const definition = user.objectList.find((value) => value.id === objId);
     if (!definition) {
       console.warn("Object not found");
@@ -32,16 +35,16 @@ export default class UseObject implements PacketBase {
 
     const handler = loader.getObjectHandle(definition.objectId);
     if (!handler) {
-      console.warn("Object not handler");
+      console.warn("Object not handled");
       return false;
     }
 
-    return true;
-    // return handler.handle({
-    //   definition,
-    //   packet,
-    //   objectData,
-    //   user,
-    // });
+    return handler.handle({
+      map: currentMap,
+      definition,
+      packet,
+      objectData,
+      user,
+    });
   }
 }
