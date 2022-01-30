@@ -27,37 +27,6 @@
     "node": ">=16.0.0"
   },
   "engineStrict": true,
-  "turbo": {
-    "baseBranch": "origin/main",
-    "pipeline": {
-      "init": {
-        "dependsOn": [
-          "^init"
-        ]
-      },
-      "build": {
-        "dependsOn": [
-          "^build"
-        ],
-        "outputs": [
-          ".next/**",
-          "dist/**"
-        ]
-      },
-      "start": {
-        "dependsOn": [
-          "build"
-        ],
-        "outputs": []
-      },
-      "lint": {
-        "outputs": []
-      },
-      "dev": {
-        "cache": false
-      }
-    }
-  },
   "scripts": {
     "init": "turbo run init",
     "dev": "turbo run dev",
@@ -66,5 +35,6 @@
   },
   "dependencies": {
     "prettier": "^2.5.1"
-  }
+  },
+  "packageManager": "npm@8.3.2"
 }

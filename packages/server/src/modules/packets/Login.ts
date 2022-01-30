@@ -27,6 +27,7 @@ export default class Login implements PacketBase {
   async handle(user: GameUser, params: PacketParams): Promise<boolean> {
     const session = params.binary.bitReadString();
     try {
+      console.log(`Login: ${session}`);
       const jwtUser = await checkJwtAuth(session);
 
       const dbUser = await prisma.user.findFirst({
