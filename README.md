@@ -14,6 +14,7 @@ Le projet n'est pas destiné à être utilisé en production pour le moment éta
 
 
 Merci au joueur [Mathieu](https://blablaland.fun/member/8205) d'avoir réalisé le logo de Blablaland.fun
+
 ## Exécuter localement
 
 Récupérer le code du projet
@@ -41,6 +42,14 @@ Démarrer le projet
 ```bash
   npm run start
 ```
+
+
+## Se connecter via le launcher de Blablaland.fun
+
+1. Il faut tout d'abord télécharger le launcher disponible [ici](https://blablaland.fun/download)
+2. Ensuite, il faut créer un raccourci du launcher avec l'argument ``target`` défini à l'adresse du site. Dans le cas de ce projet, il faut ajouter l'argument comme ceci : ``target=http://localhost:8080/``\
+\
+**Exemple:** ``"C:\Users\Blablaland\AppData\Local\Programs\blablaland-desktop\Blablaland Desktop.exe" --target=http://localhost:3000/``)
 
   
 ## Support
