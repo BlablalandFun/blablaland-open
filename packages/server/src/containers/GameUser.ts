@@ -9,7 +9,7 @@ import UserState from "../libs/users/UserState.js";
 import Walker from "../libs/users/Walker.js";
 import app from "../services/app.js";
 import loader from "../services/loader.js";
-import { FxObject, FxOptions, OwnedObject } from "../types/server.js";
+import { FxConsumer, FxObject, FxOptions, OwnedObject } from "../types/server.js";
 import GameMap from "./GameMap.js";
 
 export default class GameUser {
@@ -134,7 +134,7 @@ export default class GameUser {
     }
   };
 
-  createUserFx(obj: FxObject, options: FxOptions = {}): [FxManager | undefined, SocketMessage] {
+  createUserFx(obj: FxObject & { fxSid?: number; binData?: Binary }, options: FxOptions = {}): FxConsumer {
     const secureMap = this.mainCamera?.secureMap;
     if (!secureMap) {
       throw new Error("Not ready");
@@ -147,9 +147,13 @@ export default class GameUser {
 
     const fxSid = obj.fxSid ?? server.lastFxSid.value;
 
-    const [fxManager, binary] = secureMap.createUserFxChange(this, {
+    const { binary, fxManager } = secureMap.createUserFxChange(this, {
       fxSid,
       fxId: 6,
+      object: {
+        fxFileId: obj.fxFileId,
+        objectId: obj.objectId,
+      },
       binData: GameMap.writeFxData({
         objectId: obj.objectId,
         fxFileId: obj.fxFileId,
@@ -160,7 +164,7 @@ export default class GameUser {
       fxManager.options = options;
     }
 
-    return [fxManager, binary];
+    return { binary, fxManager };
   }
 
   sendRemoveUserFx(fxManager: FxManager, endCause = 0) {
@@ -172,7 +176,7 @@ export default class GameUser {
     if (!secureMap) {
       return;
     }
-    const [, sm] = secureMap.removeUserFxChange(this, fxManager.fxId, fxManager.fxSid, endCause);
+    const { binary: sm } = secureMap.removeUserFxChange(this, fxManager.fxId, fxManager.fxSid, endCause);
     if (camera.ready) {
       secureMap.sendAll(sm);
     } else {

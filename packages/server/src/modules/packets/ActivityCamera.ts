@@ -31,7 +31,7 @@ export default class MoveCamera implements PacketBase {
       const binData = new Binary();
       binData.bitWriteUnsignedInt(32, time / 1000);
       binData.bitWriteUnsignedInt(10, time % 1000);
-      const [_, sm] = secureMap.createMapFx({
+      const { binary: sm } = secureMap.createMapFx({
         objectId: 0,
         fxFileId: 24,
         binData,

@@ -6,11 +6,9 @@ import { ObjectBase } from "../ObjectBase.js";
 export default class Jetpack implements ObjectBase {
   objectId = 11;
   async handle(options: ObjectHandlerOptions): Promise<boolean> {
-    console.log(options);
-
     const { definition, user } = options;
     if (definition.quantity <= 0) {
-      console.log('Pas de quantité')
+      console.log("Pas de quantité");
       return false;
     }
 
@@ -18,24 +16,25 @@ export default class Jetpack implements ObjectBase {
       return fx.objectId === definition.objectId;
     });
 
-    console.log({ idxFx });
     if (idxFx < 0) {
       // pas en cours
       const binData = new Binary();
       binData.bitWriteUnsignedInt(32, definition.quantity);
       binData.bitWriteUnsignedInt(32, app.getTime());
-      const [fxManager, sm] = user.createUserFx({
+      const { fxManager, binary: sm } = user.createUserFx({
         objectId: definition.objectId,
         fxFileId: definition.fxFileId,
         binData,
       });
-      if (!fxManager || !sm) {
-        return false;
-      }
       options.map.sendAll(sm);
+
+      if (fxManager) {
+        user.fxMemory.push(fxManager);
+      }
     } else {
-      user.fxMemory.splice(idxFx, 1);
+      // on retire le jetpack
       user.sendRemoveUserFx(user.fxMemory[idxFx]);
+      user.fxMemory.splice(idxFx, 1);
     }
 
     return true;

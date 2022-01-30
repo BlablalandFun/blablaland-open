@@ -1,3 +1,6 @@
+import Binary from "../libs/network/Binary.js";
+import FxManager from "../libs/servers/FxManager.js";
+
 export type ServerDefinition = {
   id: number;
   port: number;
@@ -49,38 +52,31 @@ export type OwnedObject = ObjectDefinition & {
 export type FxObject = {
   objectId: number;
   fxFileId: number;
-  binData: Binary;
-  fxSid?: number;
 };
 
-export type FxMngOptions = {
+export type FxObjectIdentity = {
   objectId?: number | undefined;
   fxFileId?: number | undefined;
+}
+
+export type FxIdentity = {
+  fxId: number;
+  fxSid?: number;
+}
+
+export type FxMngOptions = {
+  object?: FxObject;
   binData: Binary;
   fxSid: number;
   fxId: number;
 };
 
-export type FxChangeOptions = {
-  binData?: Binary;
-  fxId: number;
-  fxSid?: number;
-  active: boolean;
-  endCause: number;
-};
-
-export type MapFxChange = {
-  fxId: number;
+export type FxChangeOptions = FxIdentity & {
   fxSid: number;
-  active: boolean;
-  endCause: number;
-  param?: Binary;
-};
-
-export type NewMapFxChangeOptions = {
-  fxId: number;
-  fxSid: number;
+  object?: FxObject;
   binData?: Binary;
+  active?: boolean;
+  endCause?: number;
 };
 
 export type FxDataOptions = {
