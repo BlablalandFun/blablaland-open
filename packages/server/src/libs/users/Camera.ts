@@ -108,4 +108,31 @@ export default class Camera {
     this.currMap = map;
     this.nextMap = undefined;
   }
+
+  gotoMap(target: GameMap, options?: { defaultPos?: boolean }) {
+    if (!target.server) {
+      throw new Error(`Invalid server of [mapId=${target.id}, serverId=${target.serverId}]`);
+    }
+
+    if (!this.user) {
+      throw new Error("Invalid user");
+    }
+
+    if (options?.defaultPos) {
+      this.user.walker.positionX = 475;
+      this.user.walker.positionY = 212;
+    }
+
+    const sm = this.#getHeader(2);
+    sm.bitWriteUnsignedInt(GP.BIT_MAP_ID, target.id);
+    sm.bitWriteUnsignedInt(GP.BIT_SERVER_ID, target.server.serverId);
+    sm.bitWriteUnsignedInt(GP.BIT_MAP_FILEID, target.definition.fileId);
+    sm.bitWriteUnsignedInt(GP.BIT_METHODE_ID, this.methodeId);
+    this.user.send(sm);
+
+    this.removeMap();
+    this.prevMap = this.currMap;
+    this.currMap = undefined;
+    this.nextMap = target;
+  }
 }

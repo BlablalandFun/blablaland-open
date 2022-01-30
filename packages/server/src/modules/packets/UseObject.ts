@@ -41,6 +41,7 @@ export default class UseObject implements PacketBase {
 
     return handler.handle({
       map: currentMap,
+      camera,
       definition,
       packet,
       objectData,

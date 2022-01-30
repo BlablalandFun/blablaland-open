@@ -8,7 +8,6 @@ export default class Jetpack implements ObjectBase {
   async handle(options: ObjectHandlerOptions): Promise<boolean> {
     const { definition, user } = options;
     if (definition.quantity <= 0) {
-      console.log("Pas de quantité");
       return false;
     }
 
