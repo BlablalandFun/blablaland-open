@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Yovach/blablaland-open.git"
+    "url": "git+https://github.com/BlablalandFun/blablaland-open.git"
   },
   "keywords": [],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Yovach/blablaland-open/issues"
+    "url": "https://github.com/BlablalandFun/blablaland-open/issues"
   },
-  "homepage": "https://github.com/Yovach/blablaland-open#readme",
+  "homepage": "https://github.com/BlablalandFun/blablaland-open#readme",
   "devDependencies": {
     "turbo": "^1.0.24"
   },
