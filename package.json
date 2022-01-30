@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Yovach/blablaland-open.git"
+    "url": "git+https://github.com/BlablalandFun/blablaland-open.git"
   },
   "keywords": [],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Yovach/blablaland-open/issues"
+    "url": "https://github.com/BlablalandFun/blablaland-open/issues"
   },
-  "homepage": "https://github.com/Yovach/blablaland-open#readme",
+  "homepage": "https://github.com/BlablalandFun/blablaland-open#readme",
   "devDependencies": {
     "turbo": "^1.0.24"
   },
@@ -27,38 +27,14 @@
     "node": ">=16.0.0"
   },
   "engineStrict": true,
-  "turbo": {
-    "baseBranch": "origin/main",
-    "pipeline": {
-      "build": {
-        "dependsOn": [
-          "^build"
-        ],
-        "outputs": [
-          ".next/**",
-          "dist/**"
-        ]
-      },
-      "start": {
-        "dependsOn": [
-          "build"
-        ],
-        "outputs": []
-      },
-      "lint": {
-        "outputs": []
-      },
-      "dev": {
-        "cache": false
-      }
-    }
-  },
   "scripts": {
+    "init": "turbo run init",
     "dev": "turbo run dev",
     "start": "turbo run start",
     "prettify": "prettier --write \"./**/*.ts\""
   },
   "dependencies": {
     "prettier": "^2.5.1"
-  }
+  },
+  "packageManager": "npm@8.3.2"
 }

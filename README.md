@@ -19,7 +19,7 @@ Merci au joueur [Mathieu](https://blablaland.fun/member/8205) d'avoir réalisé 
 Récupérer le code du projet
 
 ```bash
-git clone https://github.com/BlablalandFun/open.git
+git clone https://github.com/BlablalandFun/blablaland-open.git
 ```
 
 Rendez-vous dans le répertoire du code
@@ -30,6 +30,11 @@ Rendez-vous dans le répertoire du code
 Installer les dépendences NPM
 ```bash
   npm install
+```
+
+Initialiser le projet (base de données, etc.)
+```bash
+  npm run init
 ```
 
 Démarrer le projet

@@ -1,4 +1,4 @@
-import { FxMngOptions, FxOptions } from "../../types/server";
+import { FxChangeOptions, FxOptions } from "../../types/server";
 import Binary from "../network/Binary.js";
 
 export default class FxManager {
@@ -12,11 +12,11 @@ export default class FxManager {
 
   #options: FxOptions = {};
 
-  constructor(options: FxMngOptions) {
-    this.#objectId = options.objectId;
-    this.#fxFileId = options.fxFileId;
+  constructor(options: FxChangeOptions) {
+    this.#objectId = options.object?.objectId;
+    this.#fxFileId = options.object?.fxFileId;
     this.#fxSid = options.fxSid;
-    this.#binData = options.binData;
+    this.#binData = options.binData ?? new Binary();
     this.#fxId = options.fxId;
   }
 

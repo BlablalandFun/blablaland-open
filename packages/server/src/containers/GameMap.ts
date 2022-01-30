@@ -4,11 +4,13 @@ import Binary, { SocketMessage } from "../libs/network/Binary.js";
 import FxManager from "../libs/servers/FxManager.js";
 import Camera from "../libs/users/Camera.js";
 import app from "../services/app.js";
-import { FxChangeOptions, FxDataOptions, FxObject, FxOptions, InterfaceEvent, MapDefinition, NewMapFxChangeOptions } from "../types/server";
+import { FxChangeOptions, FxConsumer, FxDataOptions, FxMngOptions, FxObject, FxOptions, InterfaceEvent, MapDefinition } from "../types/server";
 import { PhysicEvent } from "../types/user.js";
 import GameUser from "./GameUser.js";
 
 export default class GameMap {
+  readonly fxMemory: FxManager[] = [];
+
   constructor(readonly id: number, readonly serverId: number, readonly definition: MapDefinition) {}
 
   get users() {
@@ -74,7 +76,16 @@ export default class GameMap {
     this.sendAll(binary);
   }
 
-  createMapFxChange({ fxId, fxSid, binData }: NewMapFxChangeOptions) {
+  removeMapFxChange(fxId: number, fxSid: number, endCause = 0) {
+    return this.writeMapFxChange({
+      fxId,
+      fxSid,
+      endCause,
+      active: false,
+    });
+  }
+
+  createMapFxChange({ fxId, fxSid, binData }: FxMngOptions) {
     return this.writeMapFxChange({
       fxId,
       fxSid,
@@ -84,35 +95,67 @@ export default class GameMap {
     });
   }
 
+  removeUserFxChange(user: GameUser, fxId: number, fxSid: number, endCause = 0) {
+    return this.writeUserFxChange(user, { fxId, fxSid, endCause, active: false });
+  }
+
+  createUserFxChange(user: GameUser, options: FxMngOptions) {
+    return this.writeUserFxChange(user, {
+      ...options,
+      active: true,
+      endCause: 0,
+    });
+  }
+
   writeFxChange(binary: Binary, { active, endCause, fxId, fxSid, binData }: FxChangeOptions) {
-    binary.bitWriteBoolean(active);
+    binary.bitWriteBoolean(active ?? false);
     if (active) {
       this.server?.lastFxSid.increment();
     } else {
-      binary.bitWriteUnsignedInt(2, endCause);
+      binary.bitWriteUnsignedInt(2, endCause ?? 0);
     }
     binary.bitWriteUnsignedInt(GP.BIT_FX_ID, fxId);
     binary.bitWriteUnsignedInt(GP.BIT_FX_SID, fxSid);
     binary.bitWriteBinaryData(binData);
   }
 
-  writeMapFxChange(options: FxChangeOptions): [FxManager | undefined, SocketMessage] {
+  writeMapFxChange(options: FxChangeOptions): FxConsumer {
+    options.fxSid ??= this.server?.lastFxSid.increment() as number;
     const binary = this.#getHeader(10);
     this.writeFxChange(binary, options);
 
+    let fxManager = undefined;
     if (options.active) {
-      const fxManager = new FxManager({
-        fxSid: options.fxSid,
-        fxId: options.fxId,
-        binData: options.binData ?? new Binary(),
+      fxManager = new FxManager({
+        ...options,
       });
-      return [fxManager, binary];
     }
 
-    return [undefined, binary];
+    return { fxManager, binary };
   }
 
-  createMapFx(obj: FxObject, options: FxOptions = {}): [FxManager | undefined, SocketMessage] {
+  writeUserFxChange(user: GameUser, options: FxChangeOptions): FxConsumer {
+    options.fxSid ??= this.server?.lastFxSid.increment() as number;
+
+    const binary = this.#getHeader(6);
+    binary.bitWriteUnsignedInt(GP.BIT_USER_PID, user.playerId);
+    if (user.mainCamera) {
+      binary.bitWriteBoolean(user.mainCamera.ready);
+    } else {
+      binary.bitWriteBoolean(false);
+    }
+    this.writeFxChange(binary, options);
+
+    let fxManager = undefined;
+    if (options.active) {
+      fxManager = new FxManager({
+        ...options,
+      });
+    }
+    return { binary, fxManager };
+  }
+
+  createMapFx(obj: FxObject & { fxSid?: number; binData?: Binary }, options: FxOptions = {}): FxConsumer {
     const server = this.server;
 
     if (!server) {
@@ -121,7 +164,7 @@ export default class GameMap {
 
     const fxSid = obj.fxSid ?? server.lastFxSid.value;
 
-    const [fxManager, binary] = this.createMapFxChange({
+    const { fxManager, binary } = this.createMapFxChange({
       fxSid,
       fxId: 5,
       binData: GameMap.writeFxData({
@@ -134,7 +177,7 @@ export default class GameMap {
       fxManager.options = options;
     }
 
-    return [fxManager, binary];
+    return { fxManager, binary };
   }
 
   static writeFxData({ fxFileId, objectId, param }: FxDataOptions) {

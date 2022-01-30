@@ -28,6 +28,18 @@ export default class MainCamera implements PacketBase {
     sm.bitWriteBoolean(false); // smileys
     sm.bitWriteBoolean(false); // amis
     sm.bitWriteBoolean(false); // blacklist
+    user.objectList.forEach((value) => {
+      sm.bitWriteBoolean(true);
+      sm.bitWriteUnsignedInt(8, 0); // action
+      sm.bitWriteUnsignedInt(32, value.id); // db id
+      sm.bitWriteUnsignedInt(GP.BIT_FX_ID, value.fxFileId);
+      sm.bitWriteUnsignedInt(GP.BIT_FX_SID, value.objectId);
+      sm.bitWriteUnsignedInt(32, value.quantity);
+      sm.bitWriteUnsignedInt(32, value.expireAt);
+      sm.bitWriteUnsignedInt(3, value.visibility);
+      sm.bitWriteUnsignedInt(5, value.genre);
+      sm.bitWriteBinaryData(value.binData);
+    });
     sm.bitWriteBoolean(false); // objets
     user.send(sm);
     return true;

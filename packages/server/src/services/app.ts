@@ -18,12 +18,17 @@ export class Application {
 
   #projectRoot?: string;
 
+  getTime() {
+    return Math.trunc(Date.now() / 1000);
+  }
+
   async init(rootDir: string) {
     this.#projectRoot = rootDir;
 
     await this.initServers();
 
     loader.loadPackets();
+    loader.loadObjects();
 
     cron.schedule("*/5 * * * *", () => this.showMetrics());
     // cron.schedule('* * * * * *', () => this.purgeInactive())
