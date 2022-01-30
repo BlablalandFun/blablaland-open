@@ -13,7 +13,7 @@ class ModuleLoader {
 
     const files: string[] = [];
     try {
-      files.push(...(await fs.readdir(packetsDir)));
+      files.push(...(await fs.readdir(packetsDir.replace("file:///", ""))));
     } catch (e) {
       console.error(e);
     }
@@ -53,7 +53,7 @@ class ModuleLoader {
 
     const files: string[] = [];
     try {
-      files.push(...(await fs.readdir(packetsDir)));
+      files.push(...(await fs.readdir(packetsDir.replace("file:///", ""))));
     } catch (e) {
       console.error(e);
     }
