@@ -5,8 +5,7 @@ import FlashServer from "../containers/FlashServer.js";
 import GameMap from "../containers/GameMap.js";
 import GameServer from "../containers/GameServer.js";
 import GameUser from "../containers/GameUser.js";
-import { ObjectDefinition } from "../types/server";
-import { DBMaps, DBObjects, DBServers } from "./definitions.js";
+import { MapDefinition, ObjectDefinition, ServerDefinition } from "../types/server";
 import loader from "./loader.js";
 
 export class Application {
@@ -14,7 +13,7 @@ export class Application {
   readonly users: GameUser[] = [];
   readonly maps: GameMap[] = [];
   readonly servers: GameServer[] = [];
-  readonly objects: ObjectDefinition[] = [...DBObjects];
+  readonly objects: ObjectDefinition[] = [];
 
   #projectRoot?: string;
 
@@ -37,6 +36,14 @@ export class Application {
 
   get projectRoot() {
     return this.#projectRoot;
+  }
+
+  async importDefinitions<T>(definitionType: "maps" | "objects" | "servers"): Promise<T> {
+    const definitionUrl = `${this.projectRoot}/files/${definitionType}.json`;
+    const data = await import(definitionUrl, {
+      assert: { type: "json" },
+    });
+    return data.default;
   }
 
   purgeInactive(): void {
@@ -62,6 +69,8 @@ export class Application {
 
   async initServers() {
     new FlashServer();
+    const DBMaps = await this.importDefinitions<MapDefinition[]>("maps");
+    const DBServers = await this.importDefinitions<ServerDefinition[]>("servers");
     DBServers.forEach((server) => {
       const gameServer = new GameServer(server);
       this.servers.push(gameServer);
