@@ -29,6 +29,8 @@ export class Application {
     loader.loadPackets();
     loader.loadObjects();
 
+    this.objects.push(...await this.importDefinitions<ObjectDefinition[]>("objects"));
+
     cron.schedule("*/5 * * * *", () => this.showMetrics());
     // cron.schedule('* * * * * *', () => this.purgeInactive())
     this.showMetrics();
