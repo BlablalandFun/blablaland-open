@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/BlablalandFun/blablaland-open#readme",
   "devDependencies": {
+    "prettier": "^2.5.1",
     "turbo": "^1.0.24"
   },
   "workspaces": [
@@ -32,9 +33,6 @@
     "dev": "turbo run dev",
     "start": "turbo run start",
     "prettify": "prettier --write \"./**/*.ts\""
-  },
-  "dependencies": {
-    "prettier": "^2.5.1"
   },
   "packageManager": "npm@8.3.2"
 }
