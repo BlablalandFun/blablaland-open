@@ -15,6 +15,11 @@ Le projet n'est pas destiné à être utilisé en production pour le moment éta
 
 Merci au joueur [Mathieu](https://blablaland.fun/member/8205) d'avoir réalisé le logo de Blablaland.fun
 
+## Conditions d'utilisation
+
+Nécessite au minimum la version **v16.14.0** de Node.js
+
+
 ## Exécuter localement
 
 Récupérer le code du projet
