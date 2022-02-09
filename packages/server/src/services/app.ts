@@ -29,7 +29,7 @@ export class Application {
     loader.loadPackets();
     loader.loadObjects();
 
-    this.objects.push(...await this.importDefinitions<ObjectDefinition[]>("objects"));
+    this.objects.push(...(await this.importDefinitions<ObjectDefinition[]>("objects")));
 
     cron.schedule("*/5 * * * *", () => this.showMetrics());
     // cron.schedule('* * * * * *', () => this.purgeInactive())
@@ -45,6 +45,7 @@ export class Application {
     const data = await import(definitionUrl, {
       assert: { type: "json" },
     });
+
     return data.default;
   }
 
