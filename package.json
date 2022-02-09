@@ -1,7 +1,7 @@
 {
   "name": "@blablaland/core",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": {
     "name": "Yovach",
     "url": "https://blablaland.fun/",
@@ -18,13 +18,14 @@
   },
   "homepage": "https://github.com/BlablalandFun/blablaland-open#readme",
   "devDependencies": {
+    "prettier": "^2.5.1",
     "turbo": "^1.0.24"
   },
   "workspaces": [
     "packages/**"
   ],
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=16.4.0"
   },
   "engineStrict": true,
   "scripts": {
@@ -32,9 +33,6 @@
     "dev": "turbo run dev",
     "start": "turbo run start",
     "prettify": "prettier --write \"./**/*.ts\""
-  },
-  "dependencies": {
-    "prettier": "^2.5.1"
   },
   "packageManager": "npm@8.3.2"
 }

@@ -9,7 +9,7 @@ class ModuleLoader {
 
   async loadObjects() {
     const nextObjects = [];
-    const packetsDir = app.projectRoot + "/modules/objects/";
+    const packetsDir = app.projectRoot + "/dist/modules/objects/";
 
     const files: string[] = [];
     try {
@@ -49,7 +49,7 @@ class ModuleLoader {
 
   async loadPackets() {
     const nextPackets = [];
-    const packetsDir = app.projectRoot + "/modules/packets/";
+    const packetsDir = app.projectRoot + "/dist/modules/packets/";
 
     const files: string[] = [];
     try {

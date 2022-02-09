@@ -57,12 +57,12 @@ export type FxObject = {
 export type FxObjectIdentity = {
   objectId?: number | undefined;
   fxFileId?: number | undefined;
-}
+};
 
 export type FxIdentity = {
   fxId: number;
   fxSid?: number;
-}
+};
 
 export type FxMngOptions = {
   object?: FxObject;

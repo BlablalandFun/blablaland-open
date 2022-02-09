@@ -2,8 +2,9 @@ import GameUser from "../../containers/GameUser.js";
 import GP from "../../libs/GP.js";
 import { SocketMessage } from "../../libs/network/Binary.js";
 import { Transport } from "../../libs/Transport.js";
-import { DBMaps, DBServers } from "../../services/definitions.js";
+import app from "../../services/app.js";
 import { PacketParams } from "../../types/network.js";
+import { MapDefinition, ServerDefinition } from "../../types/server.js";
 import { PacketBase } from "../PacketBase.js";
 
 export default class AskVariables implements PacketBase {
@@ -44,6 +45,7 @@ export default class AskVariables implements PacketBase {
     });
     sm.bitWriteBoolean(false);
 
+    const DBMaps = await app.importDefinitions<MapDefinition[]>("maps");
     DBMaps.forEach((map) => {
       sm.bitWriteBoolean(true);
       sm.bitWriteUnsignedInt(GP.BIT_MAP_ID, map.id);
@@ -60,6 +62,7 @@ export default class AskVariables implements PacketBase {
 
     sm.bitWriteBoolean(false);
 
+    const DBServers = await app.importDefinitions<ServerDefinition[]>("servers");
     DBServers.forEach((server) => {
       // écriture des serveurs
       sm.bitWriteBoolean(true);
