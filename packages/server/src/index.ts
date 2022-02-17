@@ -2,8 +2,8 @@ import path from "path";
 import semver from "semver";
 import { URL } from "url";
 
-if (!semver.gt(process.version, "16.40.0")) {
-  throw new Error("Please use Node.js 16.40.0 or higher");
+if (semver.lt(process.versions.node, "16.14.0")) {
+  throw new Error("Please use Node.js 16.14.0 or higher");
 }
 
 let __dirname = new URL(".", import.meta.url).pathname;
