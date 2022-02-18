@@ -8,9 +8,11 @@ if (semver.lt(process.versions.node, "16.14.0")) {
 
 let __dirname = new URL(".", import.meta.url).pathname;
 if (process.platform === "win32") {
-  __dirname = path.parse(import.meta.url)["dir"];
+  __dirname = path.parse(import.meta.url)["dir"] + "/..";
+} else {
+  __dirname = path.resolve(__dirname, "..");
 }
 
 import("./services/app.js").then((app) => {
-  app.default.init(path.resolve(__dirname, ".."));
+  app.default.init(__dirname);
 });
