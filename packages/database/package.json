@@ -5,13 +5,13 @@
   "main": "index.js",
   "typings": "index.d.ts",
   "dependencies": {
-    "@prisma/client": "^3.9.1"
+    "@prisma/client": "^3.9.2"
   },
   "exports": {
     "default": "./index.js"
   },
   "devDependencies": {
-    "prisma": "^3.9.1"
+    "prisma": "^3.9.2"
   },
   "scripts": {
     "init": "prisma generate && prisma db push"
