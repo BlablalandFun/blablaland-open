@@ -13,7 +13,7 @@ Développé par l'équipe de [Blablaland.fun](https://blablaland.fun), le projet
 Le projet n'est pas destiné à être utilisé en production pour le moment étant donné le code n'est pas sécurisé.
 
 
-Merci au joueur [Mathieu](https://blablaland.fun/member/8205) d'avoir réalisé le logo de Blablaland.fun
+Merci au joueur "Mathieu" d'avoir réalisé le logo de Blablaland.fun
 
 ## Conditions d'utilisation
 
@@ -59,4 +59,4 @@ Démarrer le projet
   
 ## Support
 
-Si vous rencontrez un quelconque problème, merci d'envoyer un message sur notre serveur [Discord](https://discord.gg/DARMqsW).
+Si vous rencontrez un quelconque problème, merci de créer une issue
