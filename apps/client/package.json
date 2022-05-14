@@ -8,6 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@blablaland/env": "file:packages/env",
     "@heroicons/react": "^1.0.5",
     "bcryptjs": "^2.4.3",
     "classnames": "^2.3.1",

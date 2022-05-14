@@ -36,3 +36,5 @@ yarn-error.log*
 packages/*/.turbo
 tmp/*
 !tmp/.gitkeep
+/.turbo/
+/.env

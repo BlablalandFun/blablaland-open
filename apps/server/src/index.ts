@@ -1,4 +1,6 @@
+import "@blablaland/env";
 import path from "path";
+
 import semver from "semver";
 import { URL } from "url";
 
