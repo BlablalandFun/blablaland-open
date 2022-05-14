@@ -1,11 +1,6 @@
 {
   "baseBranch": "origin/main",
   "pipeline": {
-    "init": {
-      "dependsOn": [
-        "^init"
-      ]
-    },
     "build": {
       "dependsOn": [
         "^build"
