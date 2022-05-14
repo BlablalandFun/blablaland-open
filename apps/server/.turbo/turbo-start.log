@@ -1,0 +1,41 @@
+[34m@blablaland/server:start: [0mcache hit, replaying output [2m488111c0e68da917[0m
+[34m@blablaland/server:start: [0m
+[34m@blablaland/server:start: [0m> start
+[34m@blablaland/server:start: [0m> node --experimental-json-modules dist/index.js
+[34m@blablaland/server:start: [0m
+[34m@blablaland/server:start: [0mServer 843 listening
+[34m@blablaland/server:start: [0m(node:6755) ExperimentalWarning: Importing JSON modules is an experimental feature. This feature could change at any time
+[34m@blablaland/server:start: [0m(Use `node --trace-warnings ...` to show where the warning was created)
+[34m@blablaland/server:start: [0mServer[port=12301, state=SETUP]
+[34m@blablaland/server:start: [0mServer[port=12302, state=SETUP]
+[34m@blablaland/server:start: [0mServer[port=12303, state=SETUP]
+[34m@blablaland/server:start: [0mServer[port=12301, state=LISTEN]
+[34m@blablaland/server:start: [0mServer[port=12302, state=LISTEN]
+[34m@blablaland/server:start: [0mServer[port=12303, state=LISTEN]
+[34m@blablaland/server:start: [0mAPP[uptime=208ms, ram=49.43MB]
+[34m@blablaland/server:start: [0mLoader[count=2, type=OBJECT]
+[34m@blablaland/server:start: [0mLoader[count=12, type=PACKET]
+[34m@blablaland/server:start: [0mPacket[type=1, subType=3]
+[34m@blablaland/server:start: [0mPacket[type=1, subType=17] not found
+[34m@blablaland/server:start: [0mPacket[type=1, subType=1]
+[34m@blablaland/server:start: [0mPacket[type=1, subType=1]
+[34m@blablaland/server:start: [0mPacket[type=1, subType=1]
+[34m@blablaland/server:start: [0mPacket[type=1, subType=1]
+[34m@blablaland/server:start: [0mPacket[type=1, subType=1]
+[34m@blablaland/server:start: [0mPacket[type=1, subType=6]
+[34m@blablaland/server:start: [0mPacket[type=1, subType=16] not found
+[34m@blablaland/server:start: [0mLogin: eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwianRpIjoid2s1VTEtclJ5MUZNbUU2Q3A2WWptIiwiaWF0IjoxNjUyMTI4MTUyLCJleHAiOjE2NTIxNzEzNTIsInN1YiI6ImJibC1hdXRoIn0.uTo2IfIEZwDq44Ja_hZE0g05c4tSe97VEJeWa78xX7w
+[34m@blablaland/server:start: [0mPacket[type=1, subType=2]
+[34m@blablaland/server:start: [0mPacket[type=3, subType=3]
+[34m@blablaland/server:start: [0mPacket[type=1, subType=16] not found
+[34m@blablaland/server:start: [0mPacket[type=3, subType=6]
+[34m@blablaland/server:start: [0mPacket[type=1, subType=16] not found
+[34m@blablaland/server:start: [0mPacket[type=1, subType=16] not found
+[34m@blablaland/server:start: [0mPacket[type=2, subType=5] not found
+[34m@blablaland/server:start: [0mPacket[type=1, subType=16] not found
+[34m@blablaland/server:start: [0mPacket[type=1, subType=16] not found
+[34m@blablaland/server:start: [0mPacket[type=1, subType=16] not found
+[34m@blablaland/server:start: [0mPacket[type=1, subType=16] not found
+[34m@blablaland/server:start: [0mPacket[type=1, subType=16] not found
+[34m@blablaland/server:start: [0mPacket[type=2, subType=2]
+[34m@blablaland/server:start: [0mPacket[type=2, subType=1]

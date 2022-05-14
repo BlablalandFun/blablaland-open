@@ -1,0 +1,8 @@
+[32m@blablaland/client:start: [0mcache hit, replaying output [2md91e45c81b113522[0m
+[32m@blablaland/client:start: [0m
+[32m@blablaland/client:start: [0m> start
+[32m@blablaland/client:start: [0m> next start -p 8080
+[32m@blablaland/client:start: [0m
+[32m@blablaland/client:start: [0mready - started server on 0.0.0.0:8080, url: http://localhost:8080
+[32m@blablaland/client:start: [0mWarning: For production Image Optimization with Next.js, the optional 'sharp' package is strongly recommended. Run 'yarn add sharp', and Next.js will use it automatically for Image Optimization.
+[32m@blablaland/client:start: [0mRead more: https://nextjs.org/docs/messages/sharp-missing-in-production

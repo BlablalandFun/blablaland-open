@@ -1,5 +1,4 @@
-import { NextPageContext } from 'next';
-import React from 'react';
+import { NextPageContext } from "next";
 
 const Params = () => {};
 
@@ -11,8 +10,8 @@ export const getServerSideProps = async (ctx: NextPageContext) => {
   ctx.res.end();
 
   return {
-    props: {}
-  }
-}
+    props: {},
+  };
+};
 
 export default Params;
