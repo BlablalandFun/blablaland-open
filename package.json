@@ -30,7 +30,7 @@
   },
   "engineStrict": true,
   "scripts": {
-    "init": "prisma generate --schema=./packages/database/prisma/schema.prisma",
+    "init": "prisma generate --schema=./packages/database/prisma/schema.prisma && prisma db push --schema=./packages/database/prisma/schema.prisma",
     "dev": "turbo run dev",
     "start": "turbo run start",
     "prettify": "prettier --write \"./**/*.ts\""
